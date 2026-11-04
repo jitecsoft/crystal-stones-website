@@ -1,0 +1,3 @@
+import Link from "next/link";
+export const metadata = { title: "Media library setup | Crystal Stones" };
+export default function AdminSetupPage() { return <main className="admin-shell"><section className="admin-card"><p className="eyebrow">Private workspace</p><h1>Media library setup</h1><p>This project is not connected to any database or file service yet. To enable team media management, provision a dedicated Crystal Stones Supabase project separately, configure local environment values, and apply the migration after review.</p><p>No shared business credentials or services are used by this local app.</p><Link className="button button-outline" href="/">Return to website</Link></section></main>; }
