@@ -1,4 +1,6 @@
-# Crystal Stones website rebuild
+# Crystal Stones Website
+
+Repository: `crystal-stones-website`
 
 A Next.js App Router rebuild for the Crystal Stones website, including:
 - Premium, responsive visual system
