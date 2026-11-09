@@ -5,7 +5,7 @@ import { Catalogue } from "@/components/Catalogue";
 
 export const metadata: Metadata = {
   title: "All Materials",
-  description: "Explore marble, granite, quartzite, travertine and architectural surface material references. Filter by family and colour, then request a project quotation.",
+  description: "Explore marble, granite, onyx, travertine, sandstone, quartzite and architectural surface material references. Filter by family and colour, then request a project quotation.",
   alternates: { canonical: "/all-materials/" }
 };
 

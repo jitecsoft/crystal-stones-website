@@ -46,13 +46,71 @@ export type ImportedMarbleVariety = {
 };
 
 const researchDate = "2026-11-04";
-const illustration = {
-  src: "/images/marble-sourcing.webp",
-  alt: "Illustrative marble library; this is not a photograph of the named variety or a current slab",
-  attribution: "AI-generated for this Crystal Stones development project",
-  usage: "Development illustration only; replace with approved variety-specific photography before launch",
-  illustrative: true,
+
+type MarbleImage = ImportedMarbleVariety["image"];
+
+const marbleImages: Record<"white" | "beige" | "grey" | "dark" | "pink" | "brown", MarbleImage> = {
+  white: {
+    src: "/images/catalogue/imported-marble/pexels-white-marble.webp",
+    alt: "Illustrative white marble surface with soft grey veining; not a photograph of the named variety or a current slab",
+    attribution: "Pexels stock photography · colour-matched illustration",
+    usage: "Colour-matched illustration only; replace with approved variety-specific photography before launch",
+    illustrative: true,
+  },
+  beige: {
+    src: "/images/catalogue/imported-marble/pexels-beige-marble.webp",
+    alt: "Illustrative warm beige stone surface; not a photograph of the named variety or a current slab",
+    attribution: "Pexels stock photography · colour-matched illustration",
+    usage: "Colour-matched illustration only; replace with approved variety-specific photography before launch",
+    illustrative: true,
+  },
+  grey: {
+    src: "/images/catalogue/imported-marble/pexels-grey-marble.webp",
+    alt: "Illustrative grey marble surface with tonal movement; not a photograph of the named variety or a current slab",
+    attribution: "Pexels stock photography · colour-matched illustration",
+    usage: "Colour-matched illustration only; replace with approved variety-specific photography before launch",
+    illustrative: true,
+  },
+  dark: {
+    src: "/images/catalogue/imported-marble/pexels-dark-marble.webp",
+    alt: "Illustrative dark marble surface with pale veining; not a photograph of the named variety or a current slab",
+    attribution: "Pexels stock photography · colour-matched illustration",
+    usage: "Colour-matched illustration only; replace with approved variety-specific photography before launch",
+    illustrative: true,
+  },
+  pink: {
+    src: "/images/catalogue/imported-marble/pexels-pink-marble.webp",
+    alt: "Illustrative muted pink marble surface; not a photograph of the named variety or a current slab",
+    attribution: "Pexels stock photography · colour-matched illustration",
+    usage: "Colour-matched illustration only; replace with approved variety-specific photography before launch",
+    illustrative: true,
+  },
+  brown: {
+    src: "/images/catalogue/imported-marble/pexels-brown-marble.webp",
+    alt: "Illustrative warm brown and gold stone surface; not a photograph of the named variety or a current slab",
+    attribution: "Pexels stock photography · colour-matched illustration",
+    usage: "Colour-matched illustration only; replace with approved variety-specific photography before launch",
+    illustrative: true,
+  },
 };
+
+function marbleImageFor(colours: string[], name: string): MarbleImage {
+  const search = name.toLowerCase();
+  if (/viola|lilac|rosa|pink/.test(search)) return marbleImages.pink;
+  if (/portoro|nero|marquina|dark|black/.test(search)) return marbleImages.dark;
+  if (/rosso|red|brown|marron|emperador/.test(search)) return marbleImages.brown;
+  if (/giallo|gold|beige|marfil|botticino|siena|crema/.test(search)) return marbleImages.beige;
+  if (/grigio|grey|gray|bardiglio|orobico|tundra|cloud/.test(search)) return marbleImages.grey;
+  if (/carrara|statuario|white|thassos|lasa|afyon|mugla|marmara/.test(search)) return marbleImages.white;
+
+  const colourSearch = colours.join(" ").toLowerCase();
+  if (/lilac|pink/.test(colourSearch)) return marbleImages.pink;
+  if (/black/.test(colourSearch)) return marbleImages.dark;
+  if (/red|brown/.test(colourSearch)) return marbleImages.brown;
+  if (/beige|ivory/.test(colourSearch)) return marbleImages.beige;
+  if (/grey|blue/.test(colourSearch)) return marbleImages.grey;
+  return marbleImages.white;
+}
 
 const carraraQuarries = "https://www.igfmarmi.it/en/marble-quarries/";
 const carraraCoop = "https://coopcavatorigioia.it/le-cave/";
@@ -75,7 +133,7 @@ const estremozSource = "https://iugs-geoheritage.org/geoheritage_stones/estremoz
 function variety(input: Omit<ImportedMarbleVariety, "image" | "technicalDocuments" | "availability" | "availabilityVerifiedAt" | "seoTitle" | "seoDescription">): ImportedMarbleVariety {
   return {
     ...input,
-    image: illustration,
+    image: marbleImageFor(input.colours, input.name),
     technicalDocuments: [],
     availability: "enquiry-based",
     availabilityVerifiedAt: null,

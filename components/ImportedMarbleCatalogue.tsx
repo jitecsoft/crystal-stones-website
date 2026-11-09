@@ -8,6 +8,14 @@ import type { ImportedMarbleVariety, MarbleOrigin } from "@/lib/imported-marble"
 type Filters = { query: string; origin: string; colour: string; pattern: string; finish: string; application: string };
 const emptyFilters: Filters = { query: "", origin: "", colour: "", pattern: "", finish: "", application: "" };
 const origins: MarbleOrigin[] = ["Italy", "Turkey", "Spain", "Greece", "Portugal"];
+const filterLabels: Record<keyof Filters, string> = {
+  query: "Search",
+  origin: "Origin",
+  colour: "Colour",
+  pattern: "Pattern",
+  finish: "Finish",
+  application: "Application",
+};
 
 function enquiryHref(item: ImportedMarbleVariety, requestPhotos = false) {
   const params = new URLSearchParams({ material: "Marble", stone: item.name });
@@ -43,6 +51,8 @@ export function ImportedMarbleCatalogue({ products, lockedOrigin, initialFilters
   const applicationOptions = [...new Set(products.flatMap((item) => item.attributesVerified ? item.applications : []))].sort();
 
   const update = (key: keyof Filters, value: string) => setFilters((current) => ({ ...current, [key]: value }));
+  const activeFilters = (Object.keys(filters) as (keyof Filters)[]).filter((key) => Boolean(filters[key]));
+  const clearAll = () => setFilters((current) => ({ ...emptyFilters, ...(lockedOrigin ? { origin: current.origin } : {}) }));
   const toggleCompare = (slug: string) => {
     setLimitMessage("");
     if (selected.includes(slug)) setSelected((current) => current.filter((item) => item !== slug));
@@ -65,7 +75,13 @@ export function ImportedMarbleCatalogue({ products, lockedOrigin, initialFilters
       </div>
 
       {!lockedOrigin && <p className="marble-catalogue__filter-note">Filters use attributes referenced in the starter research. Unverified attributes remain blank until confirmed for a named variety.</p>}
-      {compared.length > 0 && <section className="marble-compare" aria-labelledby="compare-title">
+
+      {activeFilters.length > 0 && <div className="active-filters" aria-label="Active filters">
+        {activeFilters.map((key) => <span className="filter-chip" key={key}>{filterLabels[key]}: {filters[key]}<button type="button" aria-label={`Remove ${filterLabels[key]} filter`} onClick={() => update(key, "")}>×</button></span>)}
+        <button className="active-filters__clear" type="button" onClick={clearAll}>Clear all</button>
+      </div>}
+
+      {compared.length > 0 && <section className="marble-compare" id="compare" aria-labelledby="compare-title">
         <div className="marble-compare__heading"><div><p className="eyebrow">Compare shortlist</p><h2 id="compare-title">A side-by-side starting point</h2></div><button className="text-button" type="button" onClick={() => setSelected([])}>Clear shortlist</button></div>
         <div className="marble-compare__scroll"><table><thead><tr><th scope="col">Attribute</th>{compared.map((item) => <th scope="col" key={item.slug}>{item.name}</th>)}</tr></thead><tbody>
           <tr><th scope="row">Origin</th>{compared.map((item) => <td key={item.slug}>{item.origin.country ?? "Confirm for lot"}</td>)}</tr>
@@ -83,7 +99,7 @@ export function ImportedMarbleCatalogue({ products, lockedOrigin, initialFilters
         {filteredProducts.map((item) => <article className="marble-card" key={item.slug}>
           <Link href={`/marble/variety/${item.slug}/`} className="marble-card__media">
             <Image src={item.image.src} alt={item.image.alt} fill sizes="(max-width: 650px) 100vw, (max-width: 1000px) 50vw, 33vw" />
-            <span className="image-label">Illustrative image</span>
+            {item.image.illustrative && <span className="image-label">Illustrative</span>}
           </Link>
           <div className="marble-card__body">
             <div className="marble-card__meta"><span>{item.origin.country ?? "Origin to confirm"}</span><span>{familyLabel(item)}</span></div>
@@ -94,8 +110,13 @@ export function ImportedMarbleCatalogue({ products, lockedOrigin, initialFilters
             <p className="availability-line">Request price &amp; availability</p>
           </div>
         </article>)}
-      </div> : <div className="catalogue-empty"><p className="eyebrow">No exact matches</p><h2>Try another search or ask us to source a direction.</h2><p>Some trade names and attributes are still being verified. Share your preferred look and project brief for a current sourcing response.</p><Link className="button button-dark" href="/requirement-builder/?material=Marble">Start a marble sourcing enquiry</Link></div>}
+      </div> : <div className="catalogue-empty"><p className="eyebrow">No exact matches</p><h2>Try another search or ask us to source a direction.</h2><p>Some trade names and attributes are still being verified. Share your preferred look and project brief for a current sourcing response.</p><div className="hero-actions"><button className="button button-dark" type="button" onClick={clearAll}>Clear filters</button><Link className="button button-outline" href="/requirement-builder/?material=Marble">Start a sourcing enquiry</Link></div></div>}
       <p className="catalogue-disclosure">This starter catalogue is for discovery, not a stock list. Origin, stone family, finish, technical suitability and availability must be confirmed for each offered lot. Imagery is illustrative and not variety-specific.</p>
+
+      {selected.length > 0 && <div className="compare-dock" role="region" aria-label="Compare shortlist">
+        <div><strong>{selected.length}</strong> {selected.length === 1 ? "variety" : "varieties"} shortlisted <span>{compared.map((item) => item.name).join(" · ")}</span></div>
+        <div className="compare-dock__actions"><a className="compare-dock__compare" href="#compare">Compare now</a><button type="button" onClick={() => setSelected([])}>Clear</button></div>
+      </div>}
     </div>
   );
 }

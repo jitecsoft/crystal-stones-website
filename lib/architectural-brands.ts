@@ -8,6 +8,10 @@ export type ArchitecturalBrand = {
   officialUrl: string;
   href: string;
   sourceChecked: string;
+  image: {
+    src: string;
+    alt: string;
+  };
 };
 
 /** Brand and category references only. This list does not assert a Crystal Stones authorization or current supply relationship. */
@@ -22,6 +26,10 @@ export const architecturalBrands: ArchitecturalBrand[] = [
     officialUrl: "https://www.neolith.com/",
     href: "/neolith/",
     sourceChecked: "2026-11-04",
+    image: {
+      src: "/images/catalogue/architectural-surfaces/neolith.webp",
+      alt: "Illustrative contemporary kitchen using a large-format architectural surface",
+    },
   },
   {
     slug: "dekton",
@@ -33,6 +41,10 @@ export const architecturalBrands: ArchitecturalBrand[] = [
     officialUrl: "https://www.cosentino.com/dekton/",
     href: "/architectural-surfaces/brands/dekton/",
     sourceChecked: "2026-11-04",
+    image: {
+      src: "/images/catalogue/architectural-surfaces/dekton.webp",
+      alt: "Illustrative architectural surface application for a contemporary interior",
+    },
   },
   {
     slug: "laminam",
@@ -44,6 +56,10 @@ export const architecturalBrands: ArchitecturalBrand[] = [
     officialUrl: "https://www.laminam.com/",
     href: "/architectural-surfaces/brands/laminam/",
     sourceChecked: "2026-11-04",
+    image: {
+      src: "/images/catalogue/architectural-surfaces/laminam.webp",
+      alt: "Illustrative large-format ceramic surface application",
+    },
   },
   {
     slug: "stonelam",
@@ -55,6 +71,10 @@ export const architecturalBrands: ArchitecturalBrand[] = [
     officialUrl: "https://www.stonelam.com/porcelain-slabs/",
     href: "/architectural-surfaces/brands/stonelam/",
     sourceChecked: "2026-11-04",
+    image: {
+      src: "/images/catalogue/materials/pexels-porcelain-application.webp",
+      alt: "Illustrative porcelain surface application in a contemporary interior",
+    },
   },
 ];
 
