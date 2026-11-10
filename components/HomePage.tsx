@@ -238,15 +238,6 @@ export function HomePage() {
           <div className="audience-note"><span>For</span> Architects &amp; interior designers <i>·</i> Fabricators &amp; builders <i>·</i> Premium homeowners</div>
         </div>
       </section>
-
-      <section className="home-builder-cta home-builder-cta--image" aria-labelledby="builder-title">
-        <Image className="home-builder-cta__background" src="/images/marble-sourcing.webp" alt="" fill sizes="100vw" />
-        <span className="home-builder-cta__overlay" aria-hidden="true" />
-        <div className="home-builder-cta__inner">
-          <div><p className="eyebrow">Bring the details together</p><h2 id="builder-title">Start with what you know.</h2><p>Build a brief with your preferred material, application, approximate quantity, location and finish direction.</p></div>
-          <div className="home-builder-cta__actions"><Link className="button button-light" href="/requirement-builder/">Open the requirement builder <span aria-hidden="true">↗</span></Link><Link className="home-text-link" href="/contact-us/">Contact Crystal Stones</Link></div>
-        </div>
-      </section>
     </main>
   );
 }
