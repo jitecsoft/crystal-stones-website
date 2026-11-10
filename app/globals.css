@@ -57,13 +57,6 @@ em { font-weight: 400; }
 .main-nav { display: flex; align-items: center; justify-content: center; gap: clamp(16px, 2.4vw, 34px); font-size: 12px; }
 .main-nav a { padding-block: 9px; }
 .main-nav a:hover, .footer-links a:hover, .footer-contact a:hover { color: var(--clay); }
-.nav-dropdown { position: relative; }
-.nav-dropdown > summary { display: flex; align-items: center; gap: 6px; cursor: pointer; list-style: none; padding-block: 9px; }
-.nav-dropdown > summary::-webkit-details-marker, .mobile-menu > summary::-webkit-details-marker { display: none; }
-.nav-dropdown__panel { position: absolute; top: calc(100% + 7px); left: -13px; z-index: 40; display: none; width: 250px; border: 1px solid var(--line); background: var(--white); padding: 8px; box-shadow: 0 14px 30px rgba(35,36,31,.12); }
-.nav-dropdown[open] .nav-dropdown__panel { display: grid; }
-.nav-dropdown__panel a { display: block; padding: 9px 11px !important; }
-.nav-dropdown__panel .nav-dropdown__overview { border-bottom: 1px solid var(--line); color: var(--clay); }
 .mobile-menu { display: none; }
 .header-cta { min-height: 42px; padding: 10px 15px; white-space: nowrap; }
 .header-cta__short { display: none; }

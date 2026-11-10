@@ -243,6 +243,16 @@ em { font-style: italic; font-weight: 400; }
   transform: translateY(9px);
   transition: opacity .25s var(--ease), visibility .25s var(--ease), transform .25s var(--ease);
 }
+/* Invisible bridge over the 25px visual gap so moving the pointer from the
+   trigger into the panel never crosses dead space (prevents hover flicker). */
+.nav-dropdown__panel::before {
+  content: "";
+  position: absolute;
+  top: -26px;
+  left: 0;
+  right: 0;
+  height: 26px;
+}
 .nav-dropdown.is-open .nav-dropdown__panel { opacity: 1; visibility: visible; transform: translateY(0); }
 .nav-dropdown__overview {
   display: flex;

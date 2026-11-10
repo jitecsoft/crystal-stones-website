@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { architecturalBrands } from "@/lib/architectural-brands";
 
 const primaryLinks = [
@@ -11,6 +11,12 @@ const primaryLinks = [
   { href: "/marble/", label: "Imported marble" },
   { href: "/all-materials/", label: "All materials" },
 ];
+
+// Hover-with-intent timings: a short delay before opening so sweeping the
+// navbar does not flash the panel, and a longer grace period on leave so
+// diagonal pointer paths (or a brief overshoot) do not drop the menu.
+const OPEN_DELAY = 90;
+const CLOSE_DELAY = 260;
 
 function isActive(pathname: string, href: string) {
   const base = href.replace(/\/$/, "") || "/";
@@ -22,22 +28,59 @@ export function Header() {
   const [brandsOpen, setBrandsOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownTriggerRef = useRef<HTMLButtonElement>(null);
+  const openTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearTimers = useCallback(() => {
+    if (openTimer.current) { clearTimeout(openTimer.current); openTimer.current = null; }
+    if (closeTimer.current) { clearTimeout(closeTimer.current); closeTimer.current = null; }
+  }, []);
+
+  const closeNow = useCallback(() => {
+    clearTimers();
+    setBrandsOpen(false);
+  }, [clearTimers]);
+
+  const openDropdown = () => {
+    if (closeTimer.current) { clearTimeout(closeTimer.current); closeTimer.current = null; }
+    if (brandsOpen || openTimer.current) return;
+    openTimer.current = setTimeout(() => {
+      openTimer.current = null;
+      setBrandsOpen(true);
+    }, OPEN_DELAY);
+  };
+
+  const closeDropdown = (delay: number = CLOSE_DELAY) => {
+    if (openTimer.current) { clearTimeout(openTimer.current); openTimer.current = null; }
+    if (closeTimer.current) return;
+    closeTimer.current = setTimeout(() => {
+      closeTimer.current = null;
+      setBrandsOpen(false);
+    }, delay);
+  };
+
+  const toggleDropdown = () => {
+    clearTimers();
+    setBrandsOpen((current) => !current);
+  };
 
   useEffect(() => {
-    setBrandsOpen(false);
+    closeNow();
     setMobileOpen(false);
-  }, [pathname]);
+  }, [pathname, closeNow]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setBrandsOpen(false);
+        if (brandsOpen) dropdownTriggerRef.current?.focus();
+        closeNow();
         setMobileOpen(false);
       }
     };
     const onPointerDown = (event: PointerEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setBrandsOpen(false);
+        closeNow();
       }
     };
     document.addEventListener("keydown", onKeyDown);
@@ -45,8 +88,9 @@ export function Header() {
     return () => {
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("pointerdown", onPointerDown);
+      clearTimers();
     };
-  }, []);
+  }, [brandsOpen, closeNow, clearTimers]);
 
   useEffect(() => {
     document.body.classList.toggle("menu-open", mobileOpen);
@@ -73,16 +117,21 @@ export function Header() {
           <div
             className={`nav-dropdown ${brandsOpen ? "is-open" : ""}`}
             ref={dropdownRef}
-            onMouseEnter={() => setBrandsOpen(true)}
-            onMouseLeave={() => setBrandsOpen(false)}
+            onMouseEnter={openDropdown}
+            onMouseLeave={() => closeDropdown()}
+            onFocus={openDropdown}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget as Node | null)) closeDropdown(0);
+            }}
           >
             <button
+              ref={dropdownTriggerRef}
               type="button"
               className="nav-dropdown__trigger"
               aria-expanded={brandsOpen}
               aria-haspopup="true"
               aria-controls="architectural-surfaces-menu"
-              onClick={() => setBrandsOpen((current) => !current)}
+              onClick={toggleDropdown}
             >
               Architectural surfaces <span className="nav-dropdown__chevron" aria-hidden="true">⌄</span>
             </button>
