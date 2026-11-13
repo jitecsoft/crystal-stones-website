@@ -9,7 +9,8 @@
 param(
   [string]$Key = "",
   [string]$Model = "",
-  [string]$BaseUrl = ""
+  [string]$BaseUrl = "",
+  [switch]$CheckAll
 )
 
 $ErrorActionPreference = "Stop"
@@ -50,6 +51,48 @@ Write-Host "Model    : $Model" -ForegroundColor Cyan
 Write-Host ""
 
 $candidates = @($Model) + @("gemini-flash-latest", "gemini-3.7-flash", "gemini-3.8-flash", "gemini-3.5-flash") | Select-Object -Unique
+
+if ($CheckAll) {
+  Write-Host ""
+  Write-Host "Checking every candidate model..." -ForegroundColor Cyan
+  Write-Host ""
+  $rows = @()
+  foreach ($candidate in $candidates) {
+    $payload = @{
+      model = $candidate
+      messages = @(@{ role = "user"; content = "Reply with the single word: ready" })
+    } | ConvertTo-Json -Depth 5
+    $started = Get-Date
+    try {
+      $response = Invoke-RestMethod -Uri "$BaseUrl/chat/completions" -Method POST `
+        -Headers @{ Authorization = "Bearer $Key" } -ContentType "application/json" -Body $payload -TimeoutSec 60
+      $seconds = [Math]::Round(((Get-Date) - $started).TotalSeconds, 1)
+      $rows += [pscustomobject]@{ Model = $candidate; Result = "WORKS"; Detail = "$($response.choices[0].message.content) ($seconds s)" }
+    } catch {
+      $status = $null; $detail = ""
+      if ($_.Exception.Response) {
+        $status = [int]$_.Exception.Response.StatusCode
+        try {
+          $reader = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream())
+          $detail = $reader.ReadToEnd()
+        } catch { $detail = "" }
+      }
+      $note = if ($detail -match '"message"\s*:\s*"([^"]+)"') { $Matches[1] } elseif ($detail) { $detail.Substring(0, [Math]::Min(90, $detail.Length)) } else { "no detail" }
+      if ($status -eq 503 -or $status -eq 429) { $rows += [pscustomobject]@{ Model = $candidate; Result = "BUSY"; Detail = "HTTP $status - high demand" } }
+      else { $rows += [pscustomobject]@{ Model = $candidate; Result = "ERROR"; Detail = "HTTP $status - $note" } }
+    }
+  }
+  Write-Host ""
+  $rows | Format-Table -AutoSize | Out-String -Width 200 | Write-Host
+  $working = $rows | Where-Object { $_.Result -eq "WORKS" } | Select-Object -ExpandProperty Model
+  if ($working) {
+    Write-Host "Working model(s): $($working -join ', ')" -ForegroundColor Green
+    Write-Host "Set AI_MODEL to the first one listed above." -ForegroundColor Green
+  } else {
+    Write-Host "None of the candidates answered right now. Gemini is under load - try again later." -ForegroundColor Yellow
+  }
+  exit 0
+}
 
 foreach ($candidate in $candidates) {
   $payload = @{
