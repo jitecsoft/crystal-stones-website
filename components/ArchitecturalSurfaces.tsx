@@ -58,7 +58,7 @@ export function ArchitecturalBrandPage({ brand }: { brand: ArchitecturalBrand })
         <p className="brand-detail-hero__intro">{brand.summary}</p>
         <p className="brand-detail-hero__category"><span>Material category</span><strong>{brand.category}</strong></p>
         <div className="hero-actions"><Link className="button button-dark" href={brandEnquiry(brand)}>Request range &amp; availability <span aria-hidden="true">↗</span></Link></div>
-      </div><div className="brand-detail-hero__aside"><figure className="brand-detail-hero__image"><Image src={brand.image.src} alt={brand.image.alt} fill sizes="(max-width: 900px) 100vw, 45vw" /></figure><aside className="brand-status-card"><p className="eyebrow">Range and supply status</p><h2>Confirm the current product information.</h2><p>Crystal Stones’ current collection coverage and supply relationship for this brand have not been connected to this website. Ask for the relevant collection, approved technical documents and availability for your project.</p><p className="brand-detail-availability"><span>Availability</span><strong>Confirm on enquiry</strong></p><ul>{brand.applications.map((application) => <li key={application}>{application}</li>)}</ul><p className="brand-source-note">Brand category checked against the manufacturer reference on {brand.sourceChecked}.</p></aside></div></div>
+      </div><div className="brand-detail-hero__aside"><figure className="brand-detail-hero__image"><Image src={brand.image.src} alt={brand.image.alt} fill sizes="(max-width: 900px) 100vw, 45vw" /></figure></div></div>
     </section>
     {brand.collections && brand.collections.length > 0 && (() => {
       const ranges = brand.collections.filter((collection) => collection.colours && collection.colours.length > 0);

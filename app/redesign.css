@@ -1023,15 +1023,6 @@ body.menu-open { overflow: hidden; }
 .brand-detail-hero__aside { display: grid; gap: 14px; }
 .brand-detail-hero__image { position: relative; aspect-ratio: 1.55 / 1; overflow: hidden; background: var(--sand); }
 .brand-detail-hero__image img { object-fit: cover; }
-.brand-status-card { border: 1px solid var(--line); background: #eae4d8; padding: clamp(24px, 3.5vw, 38px); }
-.brand-status-card h2 { margin-bottom: 15px; font-size: clamp(30px, 3vw, 42px); }
-.brand-status-card > p:not(.eyebrow) { color: var(--muted); font-size: 10.5px; }
-.brand-detail-availability { display: flex; justify-content: space-between; gap: 12px; border-block: 1px solid var(--line); padding-block: 10px; }
-.brand-detail-availability span { color: var(--muted); font-size: 9.5px; }
-.brand-detail-availability strong { font-size: 9.5px; }
-.brand-status-card ul { margin: 20px 0; padding-left: 18px; font-size: 9.5px; }
-.brand-status-card li { padding-block: 5px; }
-.brand-status-card .brand-source-note { margin-bottom: 0; border-top: 1px solid var(--line); padding-top: 10px; font-size: 8.5px; }
 .brand-applications { padding-block: clamp(50px, 7vw, 80px); }
 .brand-application-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-block: 1px solid var(--line); }
 .brand-application-links a { display: flex; min-height: 145px; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--line); padding: 18px; transition: background-color .25s var(--ease), color .25s var(--ease); }
