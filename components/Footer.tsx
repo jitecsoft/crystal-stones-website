@@ -27,7 +27,6 @@ export function Footer() {
           <p>Natural stone and architectural surfaces for considered spaces. Sourcing online across India since 1991.</p>
           <div className="footer-contact">
             <a href="mailto:info@crystalstones.co.in">info@crystalstones.co.in</a>
-            <a href="tel:+917093111580">+91 70931 11580</a>
             <span>Online stone sourcing across India</span>
           </div>
           <div className="footer-social">
@@ -85,6 +84,7 @@ export function Footer() {
           <a href={`${currentSite}/terms-and-conditions/`} target="_blank" rel="noreferrer">Terms</a>
           <a href={`${currentSite}/cookie-policy/`} target="_blank" rel="noreferrer">Cookies</a>
         </span>
+        <span>Website build by JitecSoft</span>
       </div>
     </footer>
   );
