@@ -153,6 +153,20 @@ export const architecturalBrands: ArchitecturalBrand[] = [
       { name: "Starlight", image: "/images/catalogue/architectural-surfaces/techlam/collections/starlight.webp" },
     ],
   },
+  {
+    slug: "sapienstone",
+    name: "SapienStone",
+    producer: "Iris Ceramica Group",
+    category: "Full-body porcelain slabs",
+    summary: "SapienStone is Iris Ceramica Group's full-body porcelain slab brand, focused on kitchen worktops, vanities and facade systems. Its collection names, available formats and technical data should be confirmed against the manufacturer's current catalogue.",
+    applications: ["Kitchen countertop", "Bathroom / vanity", "Wall cladding / feature wall", "Flooring", "Furniture / bespoke work"],
+    href: "/architectural-surfaces/brands/sapienstone/",
+    sourceChecked: "2026-11-13",
+    image: {
+      src: "/images/catalogue/materials/pexels-porcelain-application.webp",
+      alt: "Illustrative porcelain slab application in a contemporary interior",
+    },
+  },
 ];
 
 export function getArchitecturalBrand(slug: string) {
