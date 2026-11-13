@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { architecturalBrands } from "@/lib/architectural-brands";
 
 const primaryLinks = [
-  { href: "/neolith/", label: "Neolith" },
+  { href: "/architectural-surfaces/brands/techlam/", label: "Techlam" },
   { href: "/marble/", label: "Imported marble" },
   { href: "/all-materials/", label: "All materials" },
 ];
@@ -97,7 +97,7 @@ export function Header() {
     return () => document.body.classList.remove("menu-open");
   }, [mobileOpen]);
 
-  const architecturalBrandsList = architecturalBrands.filter((brand) => brand.slug !== "neolith");
+  const architecturalBrandsList = architecturalBrands;
 
   return (
     <header className="site-header">
@@ -137,7 +137,7 @@ export function Header() {
             </button>
             <div className="nav-dropdown__panel" id="architectural-surfaces-menu">
               <Link className="nav-dropdown__overview" href="/shop/sintered-stone/">
-                <span><strong>Browse all architectural surfaces</strong><small>Neolith, Dekton, Laminam, Stonelam</small></span>
+                <span><strong>Browse all architectural surfaces</strong><small>Neolith, Dekton, Techlam, Laminam, Stonelam</small></span>
                 <span aria-hidden="true">↗</span>
               </Link>
               <div className="nav-dropdown__list">

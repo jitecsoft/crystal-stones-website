@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd } from "@/components/JsonLd";
 import { PublishedMediaGallery } from "@/components/PublishedMediaGallery";
-import { getMarbleVariety, importedMarbleVarieties } from "@/lib/imported-marble";
+import { getMarbleVariety, importedMarbleVarieties, varietyApplicationImage } from "@/lib/imported-marble";
 import { siteUrl } from "@/lib/site";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -37,6 +38,7 @@ export default async function MarbleVarietyPage({ params }: Props) {
   const originLabel = item.origin.country ? [item.origin.country, item.origin.region].filter(Boolean).join(" · ") : "Confirm origin for the requested lot";
   const familyLabel = item.familyVerified ? item.stoneFamily.charAt(0).toUpperCase() + item.stoneFamily.slice(1) : "Confirm stone family for the requested lot";
   const related = importedMarbleVarieties.filter((other) => other.slug !== item.slug && other.origin.suggestedCountries.some((country) => item.origin.suggestedCountries.includes(country))).slice(0, 3);
+  const applicationImage = varietyApplicationImage(item);
 
   return <main className="marble-page">
     <JsonLd data={{
@@ -76,6 +78,10 @@ export default async function MarbleVarietyPage({ params }: Props) {
           <p className="catalogue-disclosure">No stock or price is represented here. Availability is enquiry-based and must be checked for each lot.</p>
         </div>
       </div>
+      <section className="application-showcase">
+        <div className="application-showcase__intro"><p className="eyebrow">Seen in a space</p><h2>Applied in an interior.</h2><p>Typical settings for {item.applications.length ? item.applications.join(", ").toLowerCase() : "this family"} — request slab photographs to confirm the actual stone.</p></div>
+        <figure><div className="application-showcase__media"><Image src={applicationImage.src} alt={applicationImage.alt} fill sizes="(max-width: 900px) 92vw, 1040px" /></div><figcaption>Illustrative interior · Shown to demonstrate the setting, not this specific variety.</figcaption></figure>
+      </section>
       <div className="variety-detail__support">
         <section><p className="eyebrow">Care &amp; specification</p><h2>Confirm the material before specifying.</h2><p>{item.careNotes}</p><p>Technical documents: {item.technicalDocuments.length ? item.technicalDocuments.map((doc) => <a className="text-link" key={doc.href} href={doc.href}>{doc.label}</a>) : "No verified technical documents have been supplied for this starter entry."}</p></section>
         <section className="variety-detail__research"><p className="eyebrow">Data status</p><h2>Research reference, not a stock claim.</h2><p>Origin reference last reviewed: {item.origin.verifiedAt ?? "Pending"}. Current availability last verified: {item.availabilityVerifiedAt ?? "Not confirmed"}.</p>{item.origin.sourceUrls.length > 0 && <details><summary>View origin research references</summary><ul>{item.origin.sourceUrls.map((url) => <li key={url}><a href={url} target="_blank" rel="noreferrer">Open reference source <span aria-hidden="true">↗</span></a></li>)}</ul></details>}</section>

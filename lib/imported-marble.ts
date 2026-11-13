@@ -199,3 +199,42 @@ export function productsForOrigin(slug: MarbleOriginSlug) {
 export function getMarbleVariety(slug: string) {
   return importedMarbleVarieties.find((item) => item.slug === slug);
 }
+
+/**
+ * Family-level illustrative interiors for variety pages. None of these show the
+ * actual named variety — captions on the page state this explicitly.
+ */
+const applicationImagesByFamily: Record<StoneFamily, { src: string; alt: string }> = {
+  marble: {
+    src: "/images/catalogue/imported-marble/marble-feature-hero.webp",
+    alt: "Illustrative interior with a bookmatched marble feature wall and stone counter",
+  },
+  limestone: {
+    src: "/images/home-hero.webp",
+    alt: "Illustrative warm beige interior with stone feature wall and island counter",
+  },
+  travertine: {
+    src: "/images/home-hero.webp",
+    alt: "Illustrative warm beige interior with stone feature wall and island counter",
+  },
+  onyx: {
+    src: "/images/catalogue/materials/pexels-porcelain-application.webp",
+    alt: "Illustrative bathroom interior with stone-clad walls and vanity",
+  },
+  quartzite: {
+    src: "/images/home-hero.webp",
+    alt: "Illustrative interior with a stone-topped island counter",
+  },
+  granite: {
+    src: "/images/neolith-interior.webp",
+    alt: "Illustrative kitchen interior with a grey stone island and worktops",
+  },
+  other: {
+    src: "/images/catalogue/imported-marble/marble-feature-hero.webp",
+    alt: "Illustrative interior with a natural-stone feature wall",
+  },
+};
+
+export function varietyApplicationImage(item: ImportedMarbleVariety) {
+  return applicationImagesByFamily[item.stoneFamily] ?? applicationImagesByFamily.other;
+}
