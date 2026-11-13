@@ -172,3 +172,22 @@ export const architecturalBrands: ArchitecturalBrand[] = [
 export function getArchitecturalBrand(slug: string) {
   return architecturalBrands.find((brand) => brand.slug === slug);
 }
+
+/** URL-safe slug for a brand collection name (e.g. "Alcázar" → "alcazar"). */
+export function brandCollectionSlug(name: string) {
+  return name
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/['’]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+export function getBrandCollections(brand: ArchitecturalBrand) {
+  return brand.collections ?? [];
+}
+
+export function getBrandCollection(brand: ArchitecturalBrand, slug: string) {
+  return getBrandCollections(brand).find((collection) => brandCollectionSlug(collection.name) === slug);
+}

@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { productCategories, slugify, subfamiliesForCategory } from "@/lib/products/db";
+import { AiFill } from "@/components/AiFill";
+import type { AiFields } from "@/lib/ai/ai-fill";
 
 export type ProductValues = {
   name: string;
@@ -30,7 +32,7 @@ export type ProductRecord = ProductValues & { id: string; status: string; publis
 const toList = (value: string) => value.split(",").map((item) => item.trim()).filter(Boolean).slice(0, 24);
 const fromList = (value: string[]) => value.join(", ");
 
-export function ProductForm({ product, galleryCount }: { product?: ProductRecord; galleryCount?: number }) {
+export function ProductForm({ product, galleryCount, coverUrl }: { product?: ProductRecord; galleryCount?: number; coverUrl?: string | null }) {
   const router = useRouter();
   const editing = Boolean(product);
   const [values, setValues] = useState<ProductValues>(product ?? {
@@ -76,7 +78,33 @@ export function ProductForm({ product, galleryCount }: { product?: ProductRecord
 
   function onSubmit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); send(editing ? "save" : "create"); }
 
+  const applyAi = (fields: AiFields) => {
+    const nextName = fields.title ?? values.name;
+    setValues((current) => ({
+      ...current,
+      name: nextName,
+      slug: slugLocked ? current.slug : slugify(nextName),
+      summary: fields.summary ?? current.summary,
+      description: fields.description ?? current.description,
+      tags: fields.tags ?? current.tags,
+      origin_country: fields.origin_country ?? current.origin_country,
+      origin_region: fields.origin_region ?? current.origin_region,
+      colours: fields.colours ?? current.colours,
+      patterns: fields.patterns ?? current.patterns,
+      finishes: fields.finishes ?? current.finishes,
+      applications: fields.applications ?? current.applications,
+      care_notes: fields.care_notes ?? current.care_notes,
+      seo_title: fields.seo_title ?? current.seo_title,
+      seo_description: fields.seo_description ?? current.seo_description,
+      category: fields.category ?? current.category,
+      subfamily: fields.subfamily && subfamiliesForCategory(fields.category ?? current.category).some((sub) => sub.slug === fields.subfamily) ? fields.subfamily : current.subfamily
+    }));
+  };
+
   return <form className="admin-field-grid admin-product-form" onSubmit={onSubmit}>
+    <div className="admin-field-wide">
+      <AiFill mode="product" imageUrl={coverUrl ?? null} name={values.name} description={values.summary} onFill={applyAi} />
+    </div>
     <label>Name<input value={values.name} onChange={(event) => setName(event.target.value)} maxLength={180} required /></label>
     <label>URL slug<small>/{values.slug || "your-product"}/ · {slugLocked ? "locked" : "auto-set from the name"}</small>
       <input value={values.slug} onChange={(event) => { setSlugLocked(true); set("slug", slugify(event.target.value)); }} maxLength={120} required /></label>

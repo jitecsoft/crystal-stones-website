@@ -231,6 +231,12 @@ body:has(.admin-workspace) .site-header, body:has(.admin-workspace) .site-footer
 .admin-product-form__hint { border: 1px solid var(--line); background: #f8f7f2; padding: 12px 14px; color: var(--muted); font-size: 11.5px; }
 .admin-product-form__hint strong { color: var(--ink); }
 .admin-product-form__hint a { color: var(--forest); }
+.ai-fill { border: 1px dashed var(--line); background: #f8f7f2; padding: 12px 14px; }
+.ai-fill__row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.ai-fill__row input { flex: 1 1 240px; min-height: 40px; border: 1px solid var(--line); background: #fff; padding: 9px 12px; font-size: 12px; }
+.ai-fill__row .button { flex: none; }
+.ai-fill__status { margin: 9px 0 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+.ai-fill__sources { margin: 4px 0 0; color: var(--muted); font-size: 9.5px; line-height: 1.6; }
 .admin-asset-content > p { margin: 8px 0; color: var(--muted); font-size: 11px; }
 .admin-asset-content small { color: var(--muted); font-size: 9px; }
 .admin-asset-actions { display: flex; gap: 8px; margin-top: 10px; }

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { architecturalBrands, type ArchitecturalBrand } from "@/lib/architectural-brands";
+import { architecturalBrands, brandCollectionSlug, type ArchitecturalBrand } from "@/lib/architectural-brands";
 import { JsonLd } from "@/components/JsonLd";
 import { siteUrl } from "@/lib/site";
 
@@ -67,16 +67,16 @@ export function ArchitecturalBrandPage({ brand }: { brand: ArchitecturalBrand })
         <div className="section-shell">
           <div className="section-intro"><div><p className="eyebrow">Catalogue reference</p><h2>The collection, colour by colour.</h2></div><p>Collection and colourway names as listed in the manufacturer’s current general catalogue. Colour, finish, format and availability are confirmed per project enquiry.</p></div>
           {ranges.length > 0 && <div className="brand-collection-ranges">{ranges.map((collection) => (
-            <article key={collection.name} className="brand-collection-card brand-collection-card--range">
+            <Link className="brand-collection-card brand-collection-card--range" key={collection.name} href={`/architectural-surfaces/brands/${brand.slug}/${brandCollectionSlug(collection.name)}/`}>
               {collection.image && <div className="brand-collection-card__media"><Image src={collection.image} alt={`${brand.name} ${collection.name} collection`} fill sizes="(max-width: 760px) 90vw, 420px" /></div>}
-              <div className="brand-collection-card__body"><h3>{collection.name}</h3>{collection.colours && <p>{collection.colours.join(" · ")}</p>}</div>
-            </article>
+              <div className="brand-collection-card__body"><h3>{collection.name}</h3>{collection.colours && <p>{collection.colours.join(" · ")}</p>}<span className="brand-collection-card__cta">View collection <em aria-hidden="true">↗</em></span></div>
+            </Link>
           ))}</div>}
           <div className="brand-collection-grid">{singles.map((collection) => (
-            <article key={collection.name} className="brand-collection-card">
+            <Link className="brand-collection-card" key={collection.name} href={`/architectural-surfaces/brands/${brand.slug}/${brandCollectionSlug(collection.name)}/`}>
               {collection.image && <div className="brand-collection-card__media"><Image src={collection.image} alt={`${brand.name} ${collection.name} collection surface`} fill sizes="(max-width: 760px) 30vw, 190px" /></div>}
               <h3>{collection.name}</h3>
-            </article>
+            </Link>
           ))}</div>
         </div>
       </section>;

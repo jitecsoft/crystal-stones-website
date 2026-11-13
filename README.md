@@ -6,7 +6,7 @@ A Next.js App Router rebuild for the Crystal Stones website, including:
 - Premium, responsive visual system
 - Material catalogue with search and family/colour filters
 - Dedicated Neolith journey and a multi-brand architectural-surface hub
-- Brand reference pages for Dekton, Laminam and Stonelam
+- Brand reference pages for Dekton, Laminam, Stonelam, Techlam and SapienStone, each collection with its own detail page
 - Imported-marble origin collections and variety detail routes with search, filters and shortlist comparison
 - Material detail templates
 - Preserved known route examples: `/`, `/about/`, `/all-materials/`, `/granite/`
@@ -104,8 +104,26 @@ The invitation-only team workspace is available at `/admin`. Without Supabase co
 
 - Upload accepts JPEG, PNG, WebP and AVIF up to 15 MB each. The server checks decoded format and pixel limits, retains the original in private storage, and creates thumbnail/card/detail WebP derivatives with orientation applied and derivative metadata stripped.
 - Metadata and catalogue association are captured at upload and can be corrected later by an editor. Failed derivatives can be retried from the original when it remains in private storage. Uploaded items remain private in `review_needed`; an editor or administrator must approve and publish them. Published image derivatives are copied to a separate public bucket and appear on associated imported-marble variety and material detail pages. Brand associations are stored but are not yet rendered on brand pages.
-- There is no AI provider configured. SEO fields are manual and require editorial verification. No existing approved content is overwritten.
+- There is no AI provider configured by default. SEO fields are manual and require editorial verification. No existing approved content is overwritten.
+- The catalogue assistant ("Fill with AI") is optional and off until an AI provider is configured. See **Catalogue assistant** below.
 - This feature does not provision Supabase, apply migrations, send invitations, or deploy. Database-backed operation cannot be verified until a dedicated project is configured.
 - A local test command is available as `npm test`; no live Supabase integration tests are included. If the original private upload itself failed, a team member needs to choose the source file again through a separate re-upload workflow (currently not implemented).
+
+### Catalogue assistant ("Fill with AI")
+
+Editors and administrators can fill a whole record from one click instead of typing every box:
+
+- In the **media library**, the "Edit metadata & association" panel has a **✦ Fill with AI** control. It reads the uploaded image and can suggest the title, alt text, caption, description, SEO title and description, plus the stone category or colour family to tag the image with.
+- In the **product form** (`/admin/products`), the same control fills the name, summary, description, tags, origin, colours, patterns, finishes, applications, care notes and SEO fields.
+- If a name or a one-line description is supplied, the assistant first checks public reference material for that stone and passes it to the model; when nothing relevant is found it works from the image and the team's note alone.
+- The assistant never invents certifications, prices, quarry names, thicknesses or availability — unknown facts are left empty and confirmed on enquiry. The team always reviews the wording before saving.
+
+Configure it with environment variables (any OpenAI-compatible chat API that accepts images works — OpenAI, OpenRouter, Groq, Gemini's OpenAI-compatible endpoint):
+
+- `AI_API_KEY` — required; without it the control explains that AI is not configured
+- `AI_BASE_URL` — defaults to `https://api.openai.com/v1`
+- `AI_MODEL` — defaults to `gpt-4o-mini`
+
+Never put the provider key in a `NEXT_PUBLIC_` variable.
 
 Do not copy production secrets into Git or share hosting passwords in chat.
