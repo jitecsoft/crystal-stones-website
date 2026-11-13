@@ -3,6 +3,8 @@ export type ArchitecturalBrandCollection = {
   /** Colourway names when the catalogue groups several colours on one collection page. */
   colours?: string[];
   image?: string;
+  /** Detail page href, e.g. /architectural-surfaces/brands/dekton/ember/ */
+  href?: string;
 };
 
 export type ArchitecturalBrand = {
