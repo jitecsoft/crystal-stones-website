@@ -58,7 +58,7 @@ function aiModelCandidates() {
     .map((value) => value.trim())
     .filter(Boolean);
   const defaults = primary.startsWith("gemini")
-    ? ["gemini-flash-latest", "gemini-3.7-flash", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-3.8-flash-lite-tts"]
+    ? ["gemini-flash-latest", "gemini-3.7-flash", "gemini-3.8-flash", "gemini-3.5-flash"]
     : [];
   return [primary, ...configured, ...defaults.filter((model) => model !== primary)].filter((model, index, list) => list.indexOf(model) === index);
 }

@@ -36,7 +36,7 @@ if (-not $Key) { $Key = $fileValues["AI_API_KEY"] }
 if (-not $BaseUrl) { $BaseUrl = $fileValues["AI_BASE_URL"] }
 if (-not $Model) { $Model = $fileValues["AI_MODEL"] }
 if (-not $BaseUrl) { $BaseUrl = "https://generativelanguage.googleapis.com/v1beta/openai" }
-if (-not $Model) { $Model = "gemini-3.8-flash" }
+if (-not $Model) { $Model = "gemini-3.6-flash" }
 
 if (-not $Key) {
   Write-Host ""
@@ -49,7 +49,7 @@ Write-Host "Base URL : $BaseUrl" -ForegroundColor Cyan
 Write-Host "Model    : $Model" -ForegroundColor Cyan
 Write-Host ""
 
-$candidates = @($Model) + @("gemini-flash-latest", "gemini-3.7-flash", "gemini-3.6-flash", "gemini-3.5-flash") | Select-Object -Unique
+$candidates = @($Model) + @("gemini-flash-latest", "gemini-3.7-flash", "gemini-3.8-flash", "gemini-3.5-flash") | Select-Object -Unique
 
 foreach ($candidate in $candidates) {
   $payload = @{

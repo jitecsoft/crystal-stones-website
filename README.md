@@ -125,7 +125,7 @@ Configure it with environment variables (any OpenAI-compatible chat API that acc
 - `AI_MODEL` — defaults to `gpt-4o-mini`
 - `AI_MODEL_FALLBACKS` — optional, comma separated; tried in order when the primary model is busy (Gemini returns 503/429 during demand spikes)
 
-Gemini preset: `AI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai`, `AI_MODEL=gemini-3.8-flash`, with the `AIza…` key from https://aistudio.google.com/apikey. (`gemini-2.5-flash` is no longer available to new Google accounts, so use `gemini-3.8-flash` or another model your key lists.)
+Gemini preset: `AI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai`, `AI_MODEL=gemini-3.6-flash`, with the `AIza…` key from https://aistudio.google.com/apikey. (`gemini-2.5-flash` is no longer available to new Google accounts. `gemini-3.6-flash` is the main model; `AI_MODEL_FALLBACKS` lists the alternates tried when Gemini is under load.)
 
 Never put the provider key in a `NEXT_PUBLIC_` variable.
 
