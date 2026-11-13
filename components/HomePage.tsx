@@ -59,7 +59,7 @@ function projectLink(application: string) {
   return `/requirement-builder/?${new URLSearchParams({ application }).toString()}`;
 }
 
-const neolithBrief = `/requirement-builder/?${new URLSearchParams({ material: "Porcelain / sintered stone", stone: "Neolith" }).toString()}`;
+const techlamBrief = `/requirement-builder/?${new URLSearchParams({ material: "Porcelain / sintered stone", stone: "Techlam" }).toString()}`;
 const marbleBrief = `/requirement-builder/?${new URLSearchParams({ material: "Marble", notes: "I would like to discuss imported marble sourcing." }).toString()}`;
 
 export function HomePage() {
@@ -69,9 +69,9 @@ export function HomePage() {
         <div className="home-hero__copy">
           <p className="eyebrow">Crystal Stones <span aria-hidden="true">/</span> Natural stone &amp; architectural surfaces</p>
           <h1 id="home-title">A material choice can shape <em>everything.</em></h1>
-          <p className="home-hero__intro">Explore Neolith architectural surfaces and imported natural marble, with other material families close at hand.</p>
+          <p className="home-hero__intro">Explore Techlam architectural surfaces and imported natural marble, with other material families close at hand.</p>
           <div className="home-hero__actions">
-            <Link className="button button-dark" href="/neolith/">Explore Neolith <span aria-hidden="true">↗</span></Link>
+            <Link className="button button-dark" href="/architectural-surfaces/brands/techlam/">Explore Techlam <span aria-hidden="true">↗</span></Link>
             <Link className="button button-outline" href="/marble/">Discover imported marble <span aria-hidden="true">↗</span></Link>
           </div>
           <div className="home-hero__meta">
@@ -84,8 +84,8 @@ export function HomePage() {
           <Image src="/images/home-hero.webp" alt="Illustrative warm-toned residence with a marble island and full-height stone wall" fill priority sizes="(max-width: 800px) 100vw, 53vw" />
           <div className="home-hero__plate">
             <span className="home-hero__plate-label">Signature direction</span>
-            <strong>Neolith <i>·</i> Sintered stone</strong>
-            <Link href="/neolith/">Explore the material <span aria-hidden="true">↗</span></Link>
+            <strong>Techlam <i>·</i> Sintered stone</strong>
+            <Link href="/architectural-surfaces/brands/techlam/">Explore the material <span aria-hidden="true">↗</span></Link>
           </div>
           <figcaption><span>Development imagery</span><span>Architectural surfaces · Material studies</span></figcaption>
         </figure>
@@ -122,32 +122,32 @@ export function HomePage() {
           </div>
           <Link className="family-banner" href="/shop/sintered-stone/">
             <span className="family-banner__index">05 / ENGINEERED SURFACES</span>
-            <span className="family-banner__copy"><strong>Architectural surface brands</strong><small>Neolith · Dekton · Laminam · Stonelam</small></span>
+            <span className="family-banner__copy"><strong>Architectural surface brands</strong><small>Techlam · Dekton · Laminam · Stonelam</small></span>
             <span className="family-banner__arrow" aria-hidden="true">↗</span>
           </Link>
           <p className="catalogue-disclosure">Images are illustrative references, not representations of current stock. Confirm lot identity, origin, image rights and availability before specification.</p>
         </div>
       </section>
 
-      <section className="home-feature home-feature--neolith" aria-labelledby="neolith-feature-title">
+      <section className="home-feature home-feature--techlam" aria-labelledby="techlam-feature-title">
         <div className="home-feature__copy">
           <p className="eyebrow">Flagship architectural surface</p>
-          <h2 id="neolith-feature-title">Neolith, considered for the way you live.</h2>
-          <p>Start with the application, then explore the right collection direction with the Crystal Stones team. Exact colours, finishes, specifications and availability need confirmation against current Neolith product information.</p>
+          <h2 id="techlam-feature-title">Techlam, considered for the way you live.</h2>
+          <p>Start with the application, then explore the right collection direction with the Crystal Stones team. Exact colours, finishes, specifications and availability need confirmation against current Techlam product information.</p>
           <ul className="home-feature__list">
-            <li>Explore the Neolith collection</li>
+            <li>Explore the Techlam collection</li>
             <li>Discuss application and technical documentation</li>
             <li>Request a project quotation</li>
           </ul>
           <div className="home-feature__actions">
-            <Link className="button button-light" href="/neolith/">Discover Neolith <span aria-hidden="true">↗</span></Link>
-            <Link className="home-text-link" href={neolithBrief}>Start a Neolith project brief</Link>
+            <Link className="button button-light" href="/architectural-surfaces/brands/techlam/">Discover Techlam <span aria-hidden="true">↗</span></Link>
+            <Link className="home-text-link" href={techlamBrief}>Start a Techlam project brief</Link>
           </div>
         </div>
         <figure className="home-feature__image">
-          <Image src="/images/neolith-interior.webp" alt="Illustrative kitchen interior with a matte architectural surface island" fill sizes="(max-width: 800px) 100vw, 50vw" />
-          <span className="image-corner-label">Neolith direction</span>
-          <figcaption>Illustrative surface and setting · Not product photography</figcaption>
+          <Image src="/images/catalogue/architectural-surfaces/techlam/techlam-showroom.webp" alt="Manufacturer catalogue render of Techlam sintered stone surfaces in a contemporary showroom" fill sizes="(max-width: 800px) 100vw, 50vw" />
+          <span className="image-corner-label">Techlam · Sintered stone</span>
+          <figcaption>Manufacturer catalogue render · Techlam sintered stone surfaces</figcaption>
         </figure>
       </section>
 

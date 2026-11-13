@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BackToTop } from "./BackToTop";
+import { FooterSubscribe } from "./FooterSubscribe";
 
 const currentSite = "https://crystalstones.co.in";
 const whatsappUrl = "https://wa.me/917093111580?text=Hello%20Crystal%20Stones%2C%20I%E2%80%99d%20like%20help%20sourcing%20a%20stone%20for%20my%20project.";
@@ -9,7 +10,7 @@ const linkColumns = [
   {
     title: "Explore",
     links: [
-      { href: "/neolith/", label: "Neolith" },
+      { href: "/architectural-surfaces/brands/techlam/", label: "Techlam" },
       { href: "/marble/", label: "Imported natural marble" },
       { href: "/all-materials/", label: "All materials" },
       { href: "/shop/sintered-stone/", label: "Architectural surfaces" },
@@ -92,8 +93,10 @@ export function Footer() {
         ))}
       </div>
 
+      <FooterSubscribe />
+
       <div className="footer-bottom">
-        <span>© {new Date().getFullYear()} Crystal Stones · Est. 1991</span>
+        <span>© {new Date().getFullYear()} | Designed &amp; Developed by <a href="https://jitecsoft.com" target="_blank" rel="noreferrer">JitecSoft</a></span>
         <span>Variety imagery is illustrative. Origin, technical details and availability are confirmed by lot.</span>
         <span className="footer-legal">
           <a href={`${currentSite}/privacy-policy/`} target="_blank" rel="noreferrer">Privacy</a>
@@ -101,7 +104,6 @@ export function Footer() {
           <a href={`${currentSite}/cookie-policy/`} target="_blank" rel="noreferrer">Cookies</a>
         </span>
         <div className="footer-bottom__end">
-          <span>Website build by JitecSoft</span>
           <BackToTop />
         </div>
       </div>

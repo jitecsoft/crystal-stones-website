@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function RequirementBuilderPage() {
-  return <main><section className="builder-wrap"><div className="builder-intro"><div className="eyebrow">Project requirement builder</div><h1>Tell us what your project needs.</h1><p>Configure the material, enter your measured area or quantity, and share the dimensions and finish you need. If you are not sure yet, choose the closest option and ask for guidance.</p></div><RequirementBuilder /></section></main>;
+  return <main><section className="builder-wrap"><div className="builder-intro"><div className="eyebrow">Project requirement builder</div><h1>Start with the space and the specification.</h1><p>Configure the material, enter your measured area or quantity, and share the dimensions and finish you need. If you are not sure yet, choose the closest option and ask for guidance.</p></div><RequirementBuilder /></section></main>;
 }

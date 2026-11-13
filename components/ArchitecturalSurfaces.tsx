@@ -43,8 +43,7 @@ export function ArchitecturalSurfacesPage() {
       </div>
     </section>
 
-    <section className="brand-next-steps"><div className="section-shell brand-next-steps__inner"><div><p className="eyebrow">Bring the material into context</p><h2>Start with the space and the specification.</h2><p>Share your application, approximate quantity, location and preferred finish. The product range and its suitability can then be checked against current manufacturer information.</p></div><Link className="button button-light" href="/requirement-builder/">Build a project brief <span aria-hidden="true">↗</span></Link></div></section>
-  </main>;
+    </main>;
 }
 
 export function ArchitecturalBrandPage({ brand }: { brand: ArchitecturalBrand }) {
