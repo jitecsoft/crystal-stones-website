@@ -76,6 +76,21 @@ export const architecturalBrands: ArchitecturalBrand[] = [
       alt: "Illustrative porcelain surface application in a contemporary interior",
     },
   },
+  {
+    slug: "techlam",
+    name: "Techlam",
+    producer: "Levantina Group",
+    category: "Sintered stone surfaces",
+    summary: "Techlam is Levantina Group's specialised sintered stone brand and a pioneer in the material since 2007. Its 2027 general catalogue lists around seventy collections in 3–20 mm thicknesses and slab formats up to 3200 × 1600 mm for facades, interiors, worktops and furniture.",
+    applications: ["Kitchen countertop", "Bathroom / vanity", "Flooring", "Wall cladding / feature wall", "Facade / exterior", "Furniture / bespoke work"],
+    officialUrl: "https://www.levantina.com/en/techlam/",
+    href: "/architectural-surfaces/brands/techlam/",
+    sourceChecked: "2026-11-13",
+    image: {
+      src: "/images/catalogue/architectural-surfaces/techlam/techlam-showroom.webp",
+      alt: "Manufacturer catalogue render of Techlam sintered stone surfaces in a contemporary showroom",
+    },
+  },
 ];
 
 export function getArchitecturalBrand(slug: string) {
