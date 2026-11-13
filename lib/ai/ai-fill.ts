@@ -47,6 +47,22 @@ function aiModel() {
   return process.env.AI_MODEL || "gpt-4o-mini";
 }
 
+/**
+ * Models to try when the primary one is busy (Gemini returns 503/429 during
+ * demand spikes). Override with AI_MODEL_FALLBACKS (comma separated).
+ */
+function aiModelCandidates() {
+  const primary = aiModel();
+  const configured = (process.env.AI_MODEL_FALLBACKS || "")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
+  const defaults = primary.startsWith("gemini")
+    ? ["gemini-flash-latest", "gemini-3.7-flash", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-3.8-flash-lite-tts"]
+    : [];
+  return [primary, ...configured, ...defaults.filter((model) => model !== primary)].filter((model, index, list) => list.indexOf(model) === index);
+}
+
 const USER_AGENT = "CrystalStonesCatalogue/1.0 (admin catalogue assistant)";
 
 /** Words that appear in nearly every stone query and cannot identify a reference. */
@@ -194,7 +210,6 @@ async function callModel(imageDataUrl: string | null, prompt: string, mode: "med
   const content: (Record<string, unknown> | { type: string; text: string })[] = [{ type: "text", text: prompt }];
   if (imageDataUrl) content.push({ type: "image_url", image_url: { url: imageDataUrl } });
   const base = {
-    model: aiModel(),
     messages: [
       { role: "system", content: systemPrompt(mode) },
       { role: "user", content: content as unknown as string }
@@ -218,21 +233,29 @@ async function callModel(imageDataUrl: string | null, prompt: string, mode: "med
   ];
 
   let lastStatus = 0;
-  for (const attempt of attempts) {
-    const response = await send(attempt);
-    if (response.ok) {
-      const data = await response.json();
-      const raw = data?.choices?.[0]?.message?.content;
-      const text = Array.isArray(raw)
-        ? raw.map((part: { text?: string }) => part?.text ?? "").join("")
-        : typeof raw === "string" ? raw : "";
-      if (text.trim()) return text;
-      throw new Error("The AI provider returned an empty response.");
+  let lastDetail = "";
+  for (const model of aiModelCandidates()) {
+    for (const attempt of attempts) {
+      const response = await send({ ...attempt, model });
+      if (response.ok) {
+        const data = await response.json();
+        const raw = data?.choices?.[0]?.message?.content;
+        const text = Array.isArray(raw)
+          ? raw.map((part: { text?: string }) => part?.text ?? "").join("")
+          : typeof raw === "string" ? raw : "";
+        if (text.trim()) return text;
+        throw new Error("The AI provider returned an empty response.");
+      }
+      lastStatus = response.status;
+      lastDetail = await response.text().catch(() => "");
+      // Busy or overloaded: try the next model rather than failing the request.
+      if (response.status === 503 || response.status === 429 || response.status === 529) break;
+      if (response.status !== 400 && response.status !== 404 && response.status !== 415) {
+        throw new Error(`The AI provider returned an error (${lastStatus}). ${lastDetail.slice(0, 200)}`);
+      }
     }
-    lastStatus = response.status;
-    if (response.status !== 400 && response.status !== 404 && response.status !== 415) break;
   }
-  throw new Error(`The AI provider returned an error (${lastStatus}).`);
+  throw new Error(`The AI provider is busy or the model is unavailable (${lastStatus}). ${lastDetail.slice(0, 200)}`);
 }
 
 function extractJson(text: string): Record<string, unknown> {

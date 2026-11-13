@@ -123,6 +123,7 @@ Configure it with environment variables (any OpenAI-compatible chat API that acc
 - `AI_API_KEY` — required; without it the control explains that AI is not configured
 - `AI_BASE_URL` — defaults to `https://api.openai.com/v1`
 - `AI_MODEL` — defaults to `gpt-4o-mini`
+- `AI_MODEL_FALLBACKS` — optional, comma separated; tried in order when the primary model is busy (Gemini returns 503/429 during demand spikes)
 
 Gemini preset: `AI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai`, `AI_MODEL=gemini-3.8-flash`, with the `AIza…` key from https://aistudio.google.com/apikey. (`gemini-2.5-flash` is no longer available to new Google accounts, so use `gemini-3.8-flash` or another model your key lists.)
 
