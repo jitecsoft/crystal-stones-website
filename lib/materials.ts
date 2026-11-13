@@ -19,7 +19,7 @@ export const materials: Material[] = [
     finish: ["Polished", "Honed"],
     applications: ["Flooring", "Feature walls", "Vanities"],
     summary: "A bright, expressive marble look for statement interiors. Confirm exact stone identity and lot availability before specification.",
-    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85",
+    image: "/images/catalogue/imported-marble/pexels-white-marble.webp",
     illustrative: true
   },
   {
@@ -30,7 +30,7 @@ export const materials: Material[] = [
     finish: ["Polished", "Honed", "Flamed"],
     applications: ["Flooring", "Countertops", "Exterior"],
     summary: "A versatile grey-toned granite reference for residential and commercial applications.",
-    image: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=85",
+    image: "/images/catalogue/materials/pexels-granite.webp",
     illustrative: true
   },
   {
@@ -41,7 +41,7 @@ export const materials: Material[] = [
     finish: ["Honed", "Brushed"],
     applications: ["Flooring", "Wall cladding", "Bathrooms"],
     summary: "Warm, layered natural texture for calm interiors and architectural detailing.",
-    image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=85",
+    image: "/images/catalogue/natural-stone-families/travertine.webp",
     illustrative: true
   },
   {
@@ -52,7 +52,7 @@ export const materials: Material[] = [
     finish: ["Polished", "Honed"],
     applications: ["Countertops", "Feature walls", "Furniture"],
     summary: "A dramatic stone direction for feature surfaces; confirm technical suitability for the intended use.",
-    image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=85",
+    image: "/images/catalogue/materials/pexels-quartzite.webp",
     illustrative: true
   },
   {
@@ -63,7 +63,29 @@ export const materials: Material[] = [
     finish: ["Polished", "Flamed", "Leathered"],
     applications: ["Countertops", "Flooring", "Exterior"],
     summary: "A dark-toned granite reference for bold, durable-looking surface schemes.",
-    image: "https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&w=1200&q=85",
+    image: "/images/catalogue/materials/pexels-dark-granite.webp",
+    illustrative: true
+  },
+  {
+    slug: "amber-onyx",
+    name: "Amber onyx",
+    family: "Onyx",
+    colour: "Amber / orange",
+    finish: ["Polished", "Honed"],
+    applications: ["Feature walls", "Backlit panels", "Vanities"],
+    summary: "A translucent, patterned onyx direction for expressive feature surfaces. Backlighting, slab condition and reinforcement need project-specific review.",
+    image: "/images/catalogue/natural-stone-families/onyx-amber.webp",
+    illustrative: true
+  },
+  {
+    slug: "layered-sandstone",
+    name: "Layered sandstone",
+    family: "Sandstone",
+    colour: "Brown / earthy",
+    finish: ["Natural / sawn", "Honed", "Sandblasted"],
+    applications: ["Facade / exterior", "Flooring", "Landscape"],
+    summary: "A warm, layered sedimentary stone direction for architectural and landscape use. Confirm porosity, finish and exposure suitability.",
+    image: "/images/catalogue/natural-stone-families/sandstone.webp",
     illustrative: true
   },
   {
@@ -74,7 +96,7 @@ export const materials: Material[] = [
     finish: ["Polished", "Honed / matte"],
     applications: ["Countertops", "Wall cladding", "Bathrooms"],
     summary: "A contemporary large-format surface category. Confirm manufacturer, thickness and slab dimensions.",
-    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=85",
+    image: "/images/catalogue/materials/pexels-porcelain-application.webp",
     illustrative: true
   }
 ];
@@ -85,8 +107,9 @@ export const families = [
   "Quartzite",
   "Travertine / limestone",
   "Onyx",
+  "Sandstone",
   "Porcelain / sintered stone",
   "Other / need guidance"
 ];
 
-export const colours = ["White", "Beige", "Grey", "Black", "Brown / earthy", "Green / blue", "Any / recommend options"];
+export const colours = ["White", "Beige", "Grey", "Black", "Brown / earthy", "Amber / orange", "Green / blue", "Any / recommend options"];

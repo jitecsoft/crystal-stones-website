@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { architecturalBrands, type ArchitecturalBrand } from "@/lib/architectural-brands";
 import { JsonLd } from "@/components/JsonLd";
@@ -25,12 +26,18 @@ export function ArchitecturalSurfacesPage() {
       <div className="section-shell">
         <div className="section-intro"><div><p className="eyebrow">Manufacturer references</p><h2 id="brand-library-title">Find a brand direction.</h2></div><p>Brand names identify the manufacturer or range. They do not imply Crystal Stones authorization, current stock or a particular product specification.</p></div>
         <div className="brand-grid">{architecturalBrands.map((brand, index) => <article className="brand-card" key={brand.slug}>
-          <div className="brand-card__top"><span>0{index + 1} / SURFACE BRAND</span><span>{brand.producer}</span></div>
-          <h3>{brand.name}</h3>
-          <p className="brand-card__category">{brand.category}</p>
-          <p>{brand.summary}</p>
-          <div className="brand-card__applications">{brand.applications.slice(0, 3).map((application) => <span key={application}>{application}</span>)}</div>
-          <Link className="text-link" href={brand.href}>Explore {brand.name} <span aria-hidden="true">↗</span></Link>
+          <Link className="brand-card__media" href={brand.href} aria-label={`Explore ${brand.name}`}>
+            <Image src={brand.image.src} alt={brand.image.alt} fill sizes="(max-width: 900px) 100vw, 50vw" />
+            <span className="brand-card__badge">{brand.name}</span>
+          </Link>
+          <div className="brand-card__content">
+            <div className="brand-card__top"><span>0{index + 1} / SURFACE BRAND</span><span>{brand.producer}</span></div>
+            <h3>{brand.name}</h3>
+            <p className="brand-card__category">{brand.category}</p>
+            <p>{brand.summary}</p>
+            <div className="brand-card__applications">{brand.applications.slice(0, 3).map((application) => <span key={application}>{application}</span>)}</div>
+            <Link className="text-link" href={brand.href}>Explore {brand.name} <span aria-hidden="true">↗</span></Link>
+          </div>
         </article>)}</div>
         <p className="catalogue-disclosure">No brand stock list or prices are shown. Product availability, color, finish, formats and technical details are confirmed for each requested range and location.</p>
       </div>
@@ -51,7 +58,7 @@ export function ArchitecturalBrandPage({ brand }: { brand: ArchitecturalBrand })
         <p className="brand-detail-hero__intro">{brand.summary}</p>
         <p className="brand-detail-hero__category"><span>Material category</span><strong>{brand.category}</strong></p>
         <div className="hero-actions"><Link className="button button-dark" href={brandEnquiry(brand)}>Request range &amp; availability <span aria-hidden="true">↗</span></Link><a className="button button-outline" href={brand.officialUrl} target="_blank" rel="noreferrer">Visit official brand site <span aria-hidden="true">↗</span></a></div>
-      </div><aside className="brand-status-card"><p className="eyebrow">Range and supply status</p><h2>Confirm the current product information.</h2><p>Crystal Stones’ current collection coverage and supply relationship for this brand have not been connected to this website. Ask for the relevant collection, approved technical documents and availability for your project.</p><p className="brand-detail-availability"><span>Availability</span><strong>Confirm on enquiry</strong></p><ul>{brand.applications.map((application) => <li key={application}>{application}</li>)}</ul><p className="brand-source-note">Brand category checked against the manufacturer reference on {brand.sourceChecked}.</p></aside></div>
+      </div><div className="brand-detail-hero__aside"><figure className="brand-detail-hero__image"><Image src={brand.image.src} alt={brand.image.alt} fill sizes="(max-width: 900px) 100vw, 45vw" /></figure><aside className="brand-status-card"><p className="eyebrow">Range and supply status</p><h2>Confirm the current product information.</h2><p>Crystal Stones’ current collection coverage and supply relationship for this brand have not been connected to this website. Ask for the relevant collection, approved technical documents and availability for your project.</p><p className="brand-detail-availability"><span>Availability</span><strong>Confirm on enquiry</strong></p><ul>{brand.applications.map((application) => <li key={application}>{application}</li>)}</ul><p className="brand-source-note">Brand category checked against the manufacturer reference on {brand.sourceChecked}.</p></aside></div></div>
     </section>
     <section className="brand-applications"><div className="section-shell"><div className="section-intro"><div><p className="eyebrow">A project-led enquiry</p><h2>What will the surface do?</h2></div><p>Application choices are enquiry prompts, not a guarantee of suitability. Check each product’s manufacturer documentation and fabrication requirements.</p></div><div className="brand-application-links">{brand.applications.map((application, index) => <Link key={application} href={brandEnquiry(brand, application)}><span>0{index + 1}</span><strong>{application}</strong><b aria-hidden="true">↗</b></Link>)}</div></div></section>
     <p className="catalogue-disclosure brand-detail-disclosure">Brand names are used for identification and discovery. This page does not claim authorization, current stock, pricing or supply terms from the manufacturer.</p>
