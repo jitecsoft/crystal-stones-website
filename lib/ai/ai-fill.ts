@@ -39,11 +39,11 @@ export function aiConfigured() {
   return Boolean(process.env.AI_API_KEY);
 }
 
-function aiBaseUrl() {
+export function aiBaseUrl() {
   return (process.env.AI_BASE_URL || "https://api.openai.com/v1").replace(/\/+$/, "");
 }
 
-function aiModel() {
+export function aiModel() {
   return process.env.AI_MODEL || "gpt-4o-mini";
 }
 
