@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { CatalogueProduct } from "@/lib/products/db";
-import { productCategoryLabel } from "@/lib/products/db";
+import { productCategoryLabel, subfamilyLabel } from "@/lib/products/db";
 
 export function ProductCardStrip({ products, heading, copy }: { products: CatalogueProduct[]; heading: string; copy: string }) {
   if (!products.length) return null;
@@ -14,7 +14,7 @@ export function ProductCardStrip({ products, heading, copy }: { products: Catalo
         <div className="product-strip__grid">
           {products.map((product) => (
             <Link href={`/material/${product.slug}/`} key={product.id} className="product-strip__card">
-              <span className="product-strip__category">{productCategoryLabel(product.category)}</span>
+              <span className="product-strip__category">{product.subfamily ? subfamilyLabel(product.subfamily) : productCategoryLabel(product.category)}</span>
               <h3>{product.name}</h3>
               {product.summary && <p>{product.summary}</p>}
               <b>View product <em aria-hidden="true">↗</em></b>

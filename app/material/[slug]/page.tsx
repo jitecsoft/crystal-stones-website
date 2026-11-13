@@ -11,6 +11,7 @@ import {
   getProductCoverUrl,
   productCategory,
   productCategoryLabel,
+  subfamilyLabel,
   type CatalogueProduct
 } from "@/lib/products/db";
 
@@ -55,6 +56,7 @@ function ProductDetails({ product, cover }: { product: CatalogueProduct; cover: 
   const origin = [product.origin_country, product.origin_region].filter(Boolean).join(" · ");
   const rows = [
     ["Category", categoryLabel],
+    ...(product.subfamily ? [["Sub-family", subfamilyLabel(product.subfamily)]] : []),
     ["Origin", origin || "Confirm on enquiry"],
     ["Colour direction", product.colours.join(", ") || "Confirm from current material"],
     ["Visual pattern", product.patterns.join(", ") || "Confirm from current material"],
@@ -68,7 +70,7 @@ function ProductDetails({ product, cover }: { product: CatalogueProduct; cover: 
       <PublishedMediaGallery contentType="product" slug={product.slug} fallbackSrc={cover} fallbackAlt={`${categoryLabel} illustrative reference`} fallbackNote="Illustrative category reference · Published product photography appears here once the team attaches images" className="material-detail__gallery" />
       <div>
         <div className="breadcrumb"><Link href="/">Home</Link> / {category && <Link href={category.listingHref}>{category.listingLabel}</Link>} / {product.name}</div>
-        <div className="eyebrow">{categoryLabel}{product.attributes_verified ? " · Attributes verified" : ""}</div>
+        <div className="eyebrow">{product.subfamily ? subfamilyLabel(product.subfamily) : categoryLabel}{product.attributes_verified ? " · Attributes verified" : ""}</div>
         <h1>{product.name}</h1>
         <p className="muted">{product.summary}</p>
         {product.description && <p className="material-detail__description">{product.description}</p>}

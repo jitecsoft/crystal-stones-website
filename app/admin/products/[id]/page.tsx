@@ -13,7 +13,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
   if (!canReviewMedia(role)) redirect("/admin");
   const { id } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
-  const { data: product } = await supabase.from("catalogue_products").select("id,slug,name,category,summary,description,tags,origin_country,origin_region,colours,patterns,finishes,applications,attributes_verified,care_notes,seo_title,seo_description,status,published_at").eq("id", id).maybeSingle();
+  const { data: product } = await supabase.from("catalogue_products").select("id,slug,name,category,subfamily,summary,description,tags,origin_country,origin_region,colours,patterns,finishes,applications,attributes_verified,care_notes,seo_title,seo_description,status,published_at").eq("id", id).maybeSingle();
   if (!product) notFound();
   const { count: galleryCount } = await supabase.from("media_associations").select("id", { count: "exact", head: true }).eq("content_type", "product").eq("entity_slug", product.slug);
   return <div className="admin-workspace">

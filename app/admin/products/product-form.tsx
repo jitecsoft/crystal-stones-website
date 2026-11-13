@@ -3,12 +3,13 @@
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
-import { productCategories, slugify } from "@/lib/products/db";
+import { productCategories, slugify, subfamiliesForCategory } from "@/lib/products/db";
 
 export type ProductValues = {
   name: string;
   slug: string;
   category: string;
+  subfamily: string;
   summary: string;
   description: string;
   tags: string[];
@@ -33,7 +34,7 @@ export function ProductForm({ product, galleryCount }: { product?: ProductRecord
   const router = useRouter();
   const editing = Boolean(product);
   const [values, setValues] = useState<ProductValues>(product ?? {
-    name: "", slug: "", category: "marble", summary: "", description: "", tags: [],
+    name: "", slug: "", category: "marble", subfamily: "", summary: "", description: "", tags: [],
     origin_country: "", origin_region: "", colours: [], patterns: [], finishes: [], applications: [],
     attributes_verified: false, care_notes: "", seo_title: "", seo_description: "",
   });
@@ -79,7 +80,8 @@ export function ProductForm({ product, galleryCount }: { product?: ProductRecord
     <label>Name<input value={values.name} onChange={(event) => setName(event.target.value)} maxLength={180} required /></label>
     <label>URL slug<small>/{values.slug || "your-product"}/ · {slugLocked ? "locked" : "auto-set from the name"}</small>
       <input value={values.slug} onChange={(event) => { setSlugLocked(true); set("slug", slugify(event.target.value)); }} maxLength={120} required /></label>
-    <label>Category<select value={values.category} onChange={(event) => set("category", event.target.value)}>{productCategories.map((category) => <option key={category.slug} value={category.slug}>{category.label}</option>)}</select></label>
+    <label>Category<select value={values.category} onChange={(event) => { const category = event.target.value; setValues((current) => ({ ...current, category, subfamily: subfamiliesForCategory(category).some((sub) => sub.slug === current.subfamily) ? current.subfamily : "" })); }}>{productCategories.map((category) => <option key={category.slug} value={category.slug}>{category.label}</option>)}</select></label>
+    <label>Sub-family<small>Colour family within the category (optional)</small><select value={values.subfamily} onChange={(event) => set("subfamily", event.target.value)}><option value="">None</option>{subfamiliesForCategory(values.category).map((sub) => <option key={sub.slug} value={sub.slug}>{sub.label}</option>)}</select></label>
     <label className="admin-field-wide">Short summary<small>Shown on listing cards and as the fallback meta description.</small><input value={values.summary} onChange={(event) => set("summary", event.target.value)} maxLength={500} /></label>
     <label className="admin-field-wide">Description<textarea value={values.description} onChange={(event) => set("description", event.target.value)} maxLength={8000} rows={6} /></label>
     <label className="admin-field-wide">Tags<small>Comma-separated, e.g. beige, veined, kitchen</small><input value={fromList(values.tags)} onChange={(event) => set("tags", toList(event.target.value))} /></label>

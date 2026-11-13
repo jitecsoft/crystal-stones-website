@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { materials } from "@/lib/materials";
-import { productCategorySlugs } from "@/lib/products/db";
+import { isValidSubfamily, productCategorySlugs } from "@/lib/products/categories";
 
 const stringList = z.array(z.string().trim().min(1).max(80)).max(24);
 
@@ -8,6 +8,7 @@ export const productSaveSchema = z.object({
   name: z.string().trim().min(1, "Name is required.").max(180),
   slug: z.string().trim().max(120).regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "Slug may use lowercase letters, numbers and single dashes."),
   category: z.string().refine((value): value is typeof productCategorySlugs[number] => (productCategorySlugs as readonly string[]).includes(value), "Choose a valid category."),
+  subfamily: z.string().max(60).refine((value) => value === "" || isValidSubfamily(value), "Choose a valid sub-family."),
   summary: z.string().max(500),
   description: z.string().max(8000),
   tags: stringList,

@@ -2,14 +2,30 @@ import { createClient } from "@supabase/supabase-js";
 import { getSupabaseConfig, hasSupabaseConfig } from "@/lib/supabase/config";
 import {
   categoryForFamily,
+  categorySubfamilies,
+  isValidSubfamily,
   productCategories,
   productCategory,
   productCategoryLabel,
   productCategorySlugs,
+  subfamiliesForCategory,
+  subfamilyLabel,
+  subfamilySlugs,
   type ProductCategorySlug
 } from "./categories";
 
-export { categoryForFamily, productCategories, productCategory, productCategoryLabel, productCategorySlugs };
+export {
+  categoryForFamily,
+  categorySubfamilies,
+  isValidSubfamily,
+  productCategories,
+  productCategory,
+  productCategoryLabel,
+  productCategorySlugs,
+  subfamiliesForCategory,
+  subfamilyLabel,
+  subfamilySlugs
+};
 export type { ProductCategorySlug };
 
 /**
@@ -52,6 +68,7 @@ export type CatalogueProduct = {
   slug: string;
   name: string;
   category: string;
+  subfamily: string;
   summary: string;
   description: string;
   tags: string[];
@@ -70,7 +87,7 @@ export type CatalogueProduct = {
   updated_at: string;
 };
 
-const productColumns = "id,slug,name,category,summary,description,tags,origin_country,origin_region,colours,patterns,finishes,applications,attributes_verified,care_notes,seo_title,seo_description,status,published_at,updated_at";
+const productColumns = "id,slug,name,category,subfamily,summary,description,tags,origin_country,origin_region,colours,patterns,finishes,applications,attributes_verified,care_notes,seo_title,seo_description,status,published_at,updated_at";
 
 function publicClient() {
   const { url, key } = getSupabaseConfig();
