@@ -57,9 +57,30 @@ export function ArchitecturalBrandPage({ brand }: { brand: ArchitecturalBrand })
         <h1>{brand.name}<em> for the project.</em></h1>
         <p className="brand-detail-hero__intro">{brand.summary}</p>
         <p className="brand-detail-hero__category"><span>Material category</span><strong>{brand.category}</strong></p>
-        <div className="hero-actions"><Link className="button button-dark" href={brandEnquiry(brand)}>Request range &amp; availability <span aria-hidden="true">↗</span></Link><a className="button button-outline" href={brand.officialUrl} target="_blank" rel="noreferrer">Visit official brand site <span aria-hidden="true">↗</span></a></div>
+        <div className="hero-actions"><Link className="button button-dark" href={brandEnquiry(brand)}>Request range &amp; availability <span aria-hidden="true">↗</span></Link></div>
       </div><div className="brand-detail-hero__aside"><figure className="brand-detail-hero__image"><Image src={brand.image.src} alt={brand.image.alt} fill sizes="(max-width: 900px) 100vw, 45vw" /></figure><aside className="brand-status-card"><p className="eyebrow">Range and supply status</p><h2>Confirm the current product information.</h2><p>Crystal Stones’ current collection coverage and supply relationship for this brand have not been connected to this website. Ask for the relevant collection, approved technical documents and availability for your project.</p><p className="brand-detail-availability"><span>Availability</span><strong>Confirm on enquiry</strong></p><ul>{brand.applications.map((application) => <li key={application}>{application}</li>)}</ul><p className="brand-source-note">Brand category checked against the manufacturer reference on {brand.sourceChecked}.</p></aside></div></div>
     </section>
+    {brand.collections && brand.collections.length > 0 && (() => {
+      const ranges = brand.collections.filter((collection) => collection.colours && collection.colours.length > 0);
+      const singles = brand.collections.filter((collection) => !(collection.colours && collection.colours.length > 0));
+      return <section className="brand-collections" aria-label={`${brand.name} collections`}>
+        <div className="section-shell">
+          <div className="section-intro"><div><p className="eyebrow">Catalogue reference</p><h2>The collection, colour by colour.</h2></div><p>Collection and colourway names as listed in the manufacturer’s current general catalogue. Colour, finish, format and availability are confirmed per project enquiry.</p></div>
+          {ranges.length > 0 && <div className="brand-collection-ranges">{ranges.map((collection) => (
+            <article key={collection.name} className="brand-collection-card brand-collection-card--range">
+              {collection.image && <div className="brand-collection-card__media"><Image src={collection.image} alt={`${brand.name} ${collection.name} collection`} fill sizes="(max-width: 760px) 90vw, 420px" /></div>}
+              <div className="brand-collection-card__body"><h3>{collection.name}</h3>{collection.colours && <p>{collection.colours.join(" · ")}</p>}</div>
+            </article>
+          ))}</div>}
+          <div className="brand-collection-grid">{singles.map((collection) => (
+            <article key={collection.name} className="brand-collection-card">
+              {collection.image && <div className="brand-collection-card__media"><Image src={collection.image} alt={`${brand.name} ${collection.name} collection surface`} fill sizes="(max-width: 760px) 30vw, 190px" /></div>}
+              <h3>{collection.name}</h3>
+            </article>
+          ))}</div>
+        </div>
+      </section>;
+    })()}
     <section className="brand-applications"><div className="section-shell"><div className="section-intro"><div><p className="eyebrow">A project-led enquiry</p><h2>What will the surface do?</h2></div><p>Application choices are enquiry prompts, not a guarantee of suitability. Check each product’s manufacturer documentation and fabrication requirements.</p></div><div className="brand-application-links">{brand.applications.map((application, index) => <Link key={application} href={brandEnquiry(brand, application)}><span>0{index + 1}</span><strong>{application}</strong><b aria-hidden="true">↗</b></Link>)}</div></div></section>
     <p className="catalogue-disclosure brand-detail-disclosure">Brand names are used for identification and discovery. This page does not claim authorization, current stock, pricing or supply terms from the manufacturer.</p>
   </main>;

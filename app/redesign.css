@@ -1004,6 +1004,17 @@ body.menu-open { overflow: hidden; }
 .brand-application-links span { color: var(--clay); font-family: var(--serif); font-size: 19px; }
 .brand-application-links strong { max-width: 230px; font-family: var(--serif); font-size: 19px; font-weight: 400; line-height: 1.2; }
 .brand-application-links b { align-self: flex-end; font-size: 13px; }
+.brand-collections { border-top: 1px solid var(--line); padding-block: clamp(50px, 7vw, 80px); }
+.brand-collections .section-intro { margin-bottom: 34px; }
+.brand-collection-ranges { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-bottom: 36px; }
+.brand-collection-card { border: 1px solid var(--line); background: var(--white); }
+.brand-collection-card__media { position: relative; overflow: hidden; background: var(--sand); aspect-ratio: 323 / 682; }
+.brand-collection-card--range .brand-collection-card__media { aspect-ratio: 1.6 / 1; }
+.brand-collection-card--range .brand-collection-card__body { border-top: 1px solid var(--line); padding: 13px 15px 15px; }
+.brand-collection-card--range .brand-collection-card__body h3 { font-family: var(--serif); font-size: 18px; font-weight: 500; line-height: 1.2; }
+.brand-collection-card--range .brand-collection-card__body p { margin-top: 5px; color: var(--muted); font-size: 10px; letter-spacing: .04em; line-height: 1.6; }
+.brand-collection-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 18px; }
+.brand-collection-grid .brand-collection-card h3 { padding: 10px 12px 13px; font-family: var(--serif); font-size: 14.5px; font-weight: 500; line-height: 1.25; }
 .brand-detail-disclosure { width: min(100% - 2 * var(--gutter), var(--shell)); margin: 0 auto 34px; }
 
 /* Requirement builder ----------------------------------------------------- */
@@ -1517,6 +1528,7 @@ body.menu-open { overflow: hidden; }
   .brand-applications { padding-block: 45px 54px; }
   .brand-application-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .brand-application-links a { min-height: 112px; padding: 13px; }
+  .brand-collection-ranges { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .brand-detail-disclosure { margin-bottom: 25px; }
   .builder-wrap { padding-block: 16px 60px; }
   .builder-intro { margin-bottom: 26px; }
