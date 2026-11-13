@@ -193,7 +193,7 @@ function userPrompt(input: { name?: string; description?: string; hint?: string;
 async function callModel(imageDataUrl: string | null, prompt: string, mode: "media" | "product"): Promise<string> {
   const content: (Record<string, unknown> | { type: string; text: string })[] = [{ type: "text", text: prompt }];
   if (imageDataUrl) content.push({ type: "image_url", image_url: { url: imageDataUrl } });
-  const body = {
+  const base = {
     model: aiModel(),
     messages: [
       { role: "system", content: systemPrompt(mode) },
@@ -207,16 +207,32 @@ async function callModel(imageDataUrl: string | null, prompt: string, mode: "med
     body: JSON.stringify(payload),
     signal: AbortSignal.timeout(45000)
   });
-  let response = await send(body);
-  if (!response.ok && response.status === 400) {
-    // Providers without JSON mode: retry with a plain request and parse the text.
-    response = await send({ ...body, response_format: { type: "json_object" } });
+
+  // Ask for strict JSON first, then fall back for providers that do not
+  // support JSON mode, then for providers that reject image payloads.
+  const attempts: Record<string, unknown>[] = [
+    { ...base, response_format: { type: "json_object" } },
+    { ...base },
+    { ...base, response_format: { type: "json_object" }, messages: [{ role: "system", content: systemPrompt(mode) }, { role: "user", content: prompt }] },
+    { ...base, messages: [{ role: "system", content: systemPrompt(mode) }, { role: "user", content: prompt }] }
+  ];
+
+  let lastStatus = 0;
+  for (const attempt of attempts) {
+    const response = await send(attempt);
+    if (response.ok) {
+      const data = await response.json();
+      const raw = data?.choices?.[0]?.message?.content;
+      const text = Array.isArray(raw)
+        ? raw.map((part: { text?: string }) => part?.text ?? "").join("")
+        : typeof raw === "string" ? raw : "";
+      if (text.trim()) return text;
+      throw new Error("The AI provider returned an empty response.");
+    }
+    lastStatus = response.status;
+    if (response.status !== 400 && response.status !== 404 && response.status !== 415) break;
   }
-  if (!response.ok) throw new Error(`The AI provider returned an error (${response.status}).`);
-  const data = await response.json();
-  const text = data?.choices?.[0]?.message?.content ?? "";
-  if (typeof text !== "string" || !text.trim()) throw new Error("The AI provider returned an empty response.");
-  return text;
+  throw new Error(`The AI provider returned an error (${lastStatus}).`);
 }
 
 function extractJson(text: string): Record<string, unknown> {

@@ -124,6 +124,8 @@ Configure it with environment variables (any OpenAI-compatible chat API that acc
 - `AI_BASE_URL` — defaults to `https://api.openai.com/v1`
 - `AI_MODEL` — defaults to `gpt-4o-mini`
 
+Gemini preset: `AI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai`, `AI_MODEL=gemini-2.5-flash`, with the `AIza…` key from https://aistudio.google.com/apikey.
+
 Never put the provider key in a `NEXT_PUBLIC_` variable.
 
 Do not copy production secrets into Git or share hosting passwords in chat.
