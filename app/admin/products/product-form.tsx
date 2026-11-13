@@ -126,7 +126,7 @@ export function ProductForm({ product, galleryCount, coverUrl }: { product?: Pro
 
     {editing && <div className="admin-field-wide admin-product-form__hint">
       <strong>Photos on this product page:</strong> {galleryCount ? `${galleryCount} published image${galleryCount === 1 ? "" : "s"}` : "none published yet"}.{" "}
-      Upload in the <Link href="/admin">Library</Link>, then edit that image and choose this product under “Catalogue association”.
+      Upload in the <Link href="/admin/library">Library</Link>, then edit that image and choose this product under “Catalogue association”.
     </div>}
 
     {error && <p className="admin-error admin-field-wide" role="alert">{error}</p>}
