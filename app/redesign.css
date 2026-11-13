@@ -421,6 +421,14 @@ body.menu-open { overflow: hidden; }
 .product-strip__card b { margin-top: auto; padding-top: 14px; color: var(--forest); font-size: 10px; letter-spacing: .05em; text-transform: uppercase; font-weight: 650; }
 .product-strip__card b em { font-style: normal; }
 .material-detail__description { margin-top: 12px; font-size: 12.5px; line-height: 1.75; }
+.category-media { border-block: 1px solid var(--line); background: var(--white); padding-block: clamp(50px, 7vw, 80px); }
+.category-media .section-intro { margin-bottom: 30px; }
+.category-media__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.category-media__grid figure { margin: 0; }
+.category-media__frame { overflow: hidden; aspect-ratio: 4 / 3; background: var(--sand); }
+.category-media__frame img { width: 100%; height: 100%; object-fit: cover; }
+.category-media__grid figcaption { padding-top: 9px; color: var(--muted); font-size: 10px; line-height: 1.6; }
+.category-media__grid figcaption small { display: block; margin-top: 3px; color: var(--muted); font-size: 9px; }
 .material-detail-care { border-top: 1px solid var(--line); padding-block: clamp(44px, 6vw, 70px); }
 .material-detail-care .eyebrow { margin-bottom: 8px; }
 .material-detail-care h2 { max-width: 640px; font-size: clamp(28px, 3vw, 40px); }
@@ -1368,6 +1376,7 @@ body.menu-open { overflow: hidden; }
   .family-hero, .legacy-hero { gap: 34px; }
   .material-categories__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .product-strip__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .category-media__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .family-application-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .family-application-links a { border-bottom: 1px solid var(--line); }
   .family-application-links a:nth-child(3) { border-left: 1px solid var(--line); }
@@ -1433,6 +1442,7 @@ body.menu-open { overflow: hidden; }
   :root { --gutter: 19px; --header-h: 66px; }
   .material-categories__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .product-strip__grid { grid-template-columns: 1fr; }
+  .category-media__grid { grid-template-columns: 1fr; }
   .admin-product { align-items: flex-start; flex-direction: column; gap: 11px; }
   html { scroll-padding-top: calc(var(--header-h) + 16px); }
   body { font-size: 14.5px; }

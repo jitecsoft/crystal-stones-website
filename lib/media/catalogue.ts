@@ -2,12 +2,14 @@ import { createClient } from "@supabase/supabase-js";
 import { importedMarbleVarieties } from "@/lib/imported-marble";
 import { materials } from "@/lib/materials";
 import { architecturalBrands } from "@/lib/architectural-brands";
+import { productCategorySlugs } from "@/lib/products/categories";
 import { getSupabaseConfig, hasSupabaseConfig } from "@/lib/supabase/config";
 
 const catalogueSlugs: Record<string, Set<string>> = {
   material: new Set(materials.map((item) => item.slug)),
   marble_variety: new Set(importedMarbleVarieties.map((item) => item.slug)),
   brand: new Set(architecturalBrands.map((item) => item.slug)),
+  family: new Set(productCategorySlugs),
 };
 
 const dynamicTypes = new Set(["product"]);

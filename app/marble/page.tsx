@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ImportedMarbleCatalogue } from "@/components/ImportedMarbleCatalogue";
 import { JsonLd } from "@/components/JsonLd";
 import { ProductCardStrip } from "@/components/ProductCardStrip";
+import { CategoryMediaStrip } from "@/components/CategoryMediaStrip";
 import { getPublishedProductsByCategory } from "@/lib/products/db";
 import { importedMarbleVarieties, marbleOrigins } from "@/lib/imported-marble";
 import { siteUrl } from "@/lib/site";
@@ -75,6 +76,8 @@ export default async function MarblePage({ searchParams }: { searchParams: Promi
     </section>
 
     <ProductCardStrip products={teamProducts} heading="New in the marble catalogue." copy="Latest marble products added by the team. Request photographs and current availability for each one." />
+
+    <CategoryMediaStrip category="marble" heading="Marble, photographed by the team." copy="Real photographs of marble published by Crystal Stones. Exact identity, finish and availability are confirmed per lot on enquiry." />
 
     <section className="marble-results-section" id="varieties" aria-labelledby="varieties-title">
       <div className="section-shell">

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { materials } from "@/lib/materials";
 import { MaterialCard } from "@/components/MaterialCard";
 import { ProductCardStrip } from "@/components/ProductCardStrip";
+import { CategoryMediaStrip } from "@/components/CategoryMediaStrip";
 import { categoryForFamily, getPublishedProductsByCategory } from "@/lib/products/db";
 
 export type FamilyFact = { label: string; value: string };
@@ -99,6 +100,8 @@ export async function FamilyLanding({ config }: { config: FamilyLandingConfig })
       </section>
 
       {products.length > 0 && <ProductCardStrip products={products} heading={`${config.shortName} products from the team.`} copy="Latest catalogue entries added by the Crystal Stones team. Availability, lot photographs and technical details are confirmed on enquiry." />}
+
+      {category && <CategoryMediaStrip category={category} heading={`${config.shortName}, photographed by the team.`} copy="Real photographs of this stone category published by Crystal Stones. Exact identity, finish and availability are confirmed per lot on enquiry." />}
 
       <section className="family-applications">
         <div className="section-shell">
