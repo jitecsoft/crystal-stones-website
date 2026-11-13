@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { materials } from "@/lib/materials";
 import { MaterialCard } from "@/components/MaterialCard";
+import { ProductCardStrip } from "@/components/ProductCardStrip";
+import { categoryForFamily, getPublishedProductsByCategory } from "@/lib/products/db";
 
 export type FamilyFact = { label: string; value: string };
 export type FamilyNote = { number: string; title: string; copy: string };
@@ -26,8 +28,10 @@ export type FamilyLandingConfig = {
   related: { href: string; label: string }[];
 };
 
-export function FamilyLanding({ config }: { config: FamilyLandingConfig }) {
+export async function FamilyLanding({ config }: { config: FamilyLandingConfig }) {
   const items = materials.filter((material) => material.family === config.family);
+  const category = categoryForFamily(config.family);
+  const products = category ? await getPublishedProductsByCategory(category) : [];
   return (
     <main className="family-page">
       <section className="family-hero">
@@ -93,6 +97,8 @@ export function FamilyLanding({ config }: { config: FamilyLandingConfig }) {
           <p className="note">Illustrative references only. Confirm lot identity, origin, technical suitability and availability before specification.</p>
         </div>
       </section>
+
+      {products.length > 0 && <ProductCardStrip products={products} heading={`${config.shortName} products from the team.`} copy="Latest catalogue entries added by the Crystal Stones team. Availability, lot photographs and technical details are confirmed on enquiry." />}
 
       <section className="family-applications">
         <div className="section-shell">

@@ -29,7 +29,7 @@ export async function PATCH(request: NextRequest, context: { params: Promise<{ i
     const parsed = schema.safeParse(body);
     if (!parsed.success) return NextResponse.json({ error: parsed.error.issues[0]?.message || "Please check the metadata." }, { status: 400 });
     const values = parsed.data;
-    if ((values.contentType || values.entitySlug) && !isValidMediaAssociation(values.contentType, values.entitySlug)) return NextResponse.json({ error: "Choose a valid catalogue association." }, { status: 400 });
+    if ((values.contentType || values.entitySlug) && !(await isValidMediaAssociation(values.contentType, values.entitySlug))) return NextResponse.json({ error: "Choose a valid catalogue association." }, { status: 400 });
     if (values.sourceUrl && !/^https?:\/\//i.test(values.sourceUrl)) return NextResponse.json({ error: "Source URL must begin with http:// or https://." }, { status: 400 });
     const { error: updateError } = await member.supabase.from("media_assets").update({
       title: values.title, alt_text: values.altText, caption: values.caption, description: values.description,

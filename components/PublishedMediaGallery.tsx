@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 type PublishedMedia = { id: string; title: string; alt: string; caption: string; attribution: string; variant: string; width: number; height: number; placement: string; position: number; url: string };
 
-type Props = { contentType: "material" | "marble_variety" | "brand"; slug: string; fallbackSrc: string; fallbackAlt: string; fallbackNote: string; className?: string };
+type Props = { contentType: "material" | "marble_variety" | "brand" | "product"; slug: string; fallbackSrc: string; fallbackAlt: string; fallbackNote: string; className?: string };
 
 export function PublishedMediaGallery({ contentType, slug, fallbackSrc, fallbackAlt, fallbackNote, className = "" }: Props) {
   const [items, setItems] = useState<PublishedMedia[]>([]);

@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export async function GET(request: NextRequest) {
   const contentType = request.nextUrl.searchParams.get("type") || "";
   const slug = request.nextUrl.searchParams.get("slug") || "";
-  if (!isValidMediaAssociation(contentType, slug)) return NextResponse.json({ items: [] }, { headers: { "Cache-Control": "public, max-age=60, stale-while-revalidate=300" } });
+  if (!await isValidMediaAssociation(contentType, slug)) return NextResponse.json({ items: [] }, { headers: { "Cache-Control": "public, max-age=60, stale-while-revalidate=300" } });
   if (!hasSupabaseConfig()) return NextResponse.json({ items: [] }, { headers: { "Cache-Control": "public, max-age=60, stale-while-revalidate=300" } });
 
   try {

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { ProductCardStrip } from "@/components/ProductCardStrip";
+import { categoryForFamily, getPublishedProductsByCategory } from "@/lib/products/db";
 
 export type LandingConfig = {
   title: string;
@@ -40,7 +42,9 @@ const defaultRelated = [
   { href: "/requirement-builder/", label: "Requirement builder" },
 ];
 
-export function LegacyLanding({ config }: { config: LandingConfig }) {
+export async function LegacyLanding({ config }: { config: LandingConfig }) {
+  const category = config.family ? categoryForFamily(config.family) : null;
+  const products = category ? await getPublishedProductsByCategory(category) : [];
   return (
     <main className="legacy-page">
       <section className="legacy-hero">
@@ -87,6 +91,8 @@ export function LegacyLanding({ config }: { config: LandingConfig }) {
           </div>
         </div>
       </section>
+
+      {products.length > 0 && <ProductCardStrip products={products} heading={`${config.title} products from the team.`} copy="Latest catalogue entries added by the Crystal Stones team. Product specification and availability are confirmed on enquiry." />}
 
       <section className="legacy-next">
         <div className="section-shell">

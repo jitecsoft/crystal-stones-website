@@ -21,7 +21,7 @@ export type EditableMediaAsset = {
 
 type Values = { title: string; altText: string; caption: string; description: string; seoTitle: string; seoDescription: string; attribution: string; usageRights: string; sourceUrl: string; association: string };
 
-export function MediaMetadataEditor({ asset, onSave }: { asset: EditableMediaAsset; onSave: (values: Values) => Promise<void> }) {
+export function MediaMetadataEditor({ asset, products = [], onSave }: { asset: EditableMediaAsset; products?: { slug: string; name: string }[]; onSave: (values: Values) => Promise<void> }) {
   const currentAssociation = asset.media_associations[0];
   const [values, setValues] = useState<Values>({
     title: asset.title, altText: asset.alt_text, caption: asset.caption, description: asset.description,
@@ -48,7 +48,7 @@ export function MediaMetadataEditor({ asset, onSave }: { asset: EditableMediaAss
     <label>Attribution<input value={values.attribution} onChange={(event) => set("attribution", event.target.value)} maxLength={500} /></label>
     <label>Usage rights<input value={values.usageRights} onChange={(event) => set("usageRights", event.target.value)} maxLength={1000} /></label>
     <label className="admin-field-wide">Source URL<input type="url" value={values.sourceUrl} onChange={(event) => set("sourceUrl", event.target.value)} maxLength={1000} /></label>
-    <label className="admin-field-wide">Catalogue association<select value={values.association} onChange={(event) => set("association", event.target.value)}><option value="">No product association</option><optgroup label="Materials">{materials.map((item) => <option key={`material:${item.slug}`} value={`material:${item.slug}`}>{item.name}</option>)}</optgroup><optgroup label="Imported marble varieties">{importedMarbleVarieties.map((item) => <option key={`marble_variety:${item.slug}`} value={`marble_variety:${item.slug}`}>{item.name}</option>)}</optgroup><optgroup label="Architectural brands">{architecturalBrands.map((item) => <option key={`brand:${item.slug}`} value={`brand:${item.slug}`}>{item.name}</option>)}</optgroup></select></label>
+    <label className="admin-field-wide">Catalogue association<select value={values.association} onChange={(event) => set("association", event.target.value)}><option value="">No product association</option><optgroup label="Materials">{materials.map((item) => <option key={`material:${item.slug}`} value={`material:${item.slug}`}>{item.name}</option>)}</optgroup><optgroup label="Imported marble varieties">{importedMarbleVarieties.map((item) => <option key={`marble_variety:${item.slug}`} value={`marble_variety:${item.slug}`}>{item.name}</option>)}</optgroup><optgroup label="Architectural brands">{architecturalBrands.map((item) => <option key={`brand:${item.slug}`} value={`brand:${item.slug}`}>{item.name}</option>)}</optgroup>{products.length > 0 && <optgroup label="Products">{products.map((item) => <option key={`product:${item.slug}`} value={`product:${item.slug}`}>{item.name}</option>)}</optgroup>}</select></label>
     {error && <p className="admin-error admin-field-wide" role="alert">{error}</p>}<div className="admin-edit-actions admin-field-wide"><button className="button button-outline" disabled={busy}>{busy ? "Saving…" : "Save corrections"}</button></div>
   </form></details>;
 }

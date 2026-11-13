@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ImportedMarbleCatalogue } from "@/components/ImportedMarbleCatalogue";
 import { JsonLd } from "@/components/JsonLd";
+import { ProductCardStrip } from "@/components/ProductCardStrip";
+import { getPublishedProductsByCategory } from "@/lib/products/db";
 import { importedMarbleVarieties, marbleOrigins } from "@/lib/imported-marble";
 import { siteUrl } from "@/lib/site";
 
@@ -27,6 +29,7 @@ export default async function MarblePage({ searchParams }: { searchParams: Promi
     application: single(params.application),
   };
   const filterKey = new URLSearchParams(Object.entries(initialFilters).filter(([, value]) => value)).toString();
+  const teamProducts = await getPublishedProductsByCategory("marble");
 
   return <main className="marble-page">
     <JsonLd data={{
@@ -70,6 +73,8 @@ export default async function MarblePage({ searchParams }: { searchParams: Promi
         </div>
       </div>
     </section>
+
+    <ProductCardStrip products={teamProducts} heading="New in the marble catalogue." copy="Latest marble products added by the team. Request photographs and current availability for each one." />
 
     <section className="marble-results-section" id="varieties" aria-labelledby="varieties-title">
       <div className="section-shell">

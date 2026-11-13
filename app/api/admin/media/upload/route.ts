@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
   if (!actualType || actualType !== file.type) return NextResponse.json({ error: "The file content does not match its declared image type." }, { status: 415 });
   const contentType = String(form.get("contentType") || "");
   const entitySlug = String(form.get("entitySlug") || "");
-  if ((contentType || entitySlug) && !isValidMediaAssociation(contentType, entitySlug)) return NextResponse.json({ error: "Choose a valid existing product or brand association." }, { status: 400 });
+  if ((contentType || entitySlug) && !(await isValidMediaAssociation(contentType, entitySlug))) return NextResponse.json({ error: "Choose a valid existing product or brand association." }, { status: 400 });
 
   const supabase = await createSupabaseServerClient();
   const id = crypto.randomUUID();
