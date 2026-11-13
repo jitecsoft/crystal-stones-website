@@ -36,7 +36,7 @@ if (-not $Key) { $Key = $fileValues["AI_API_KEY"] }
 if (-not $BaseUrl) { $BaseUrl = $fileValues["AI_BASE_URL"] }
 if (-not $Model) { $Model = $fileValues["AI_MODEL"] }
 if (-not $BaseUrl) { $BaseUrl = "https://generativelanguage.googleapis.com/v1beta/openai" }
-if (-not $Model) { $Model = "gemini-2.5-flash" }
+if (-not $Model) { $Model = "gemini-3.8-flash" }
 
 if (-not $Key) {
   Write-Host ""
@@ -74,6 +74,10 @@ try {
   }
   Write-Host "FAILED   : HTTP $status" -ForegroundColor Red
   if ($detail) { Write-Host $detail -ForegroundColor Red }
+  if ($detail -match "no longer available") {
+    Write-Host ""
+    Write-Host "Google retired that model for new accounts. Use a current one, e.g. gemini-3.8-flash." -ForegroundColor Yellow
+  }
   Write-Host ""
   Write-Host "Listing the models this key can use:" -ForegroundColor Yellow
   try {
