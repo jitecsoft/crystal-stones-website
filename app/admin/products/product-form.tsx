@@ -5,6 +5,7 @@ import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { productCategories, slugify, subfamiliesForCategory } from "@/lib/products/db";
 import { AiFill } from "@/components/AiFill";
+import { ProductPhotoStager, ProductPhotoUploader, uploadProductPhoto } from "./product-photos";
 import type { AiFields } from "@/lib/ai/ai-fill";
 
 export type ProductValues = {
@@ -45,6 +46,7 @@ export function ProductForm({ product, galleryCount, coverUrl }: { product?: Pro
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [staged, setStaged] = useState<File[]>([]);
   const set = <K extends keyof ProductValues>(key: K, value: ProductValues[K]) => setValues((current) => ({ ...current, [key]: value }));
 
   function setName(name: string) {
@@ -69,7 +71,16 @@ export function ProductForm({ product, galleryCount, coverUrl }: { product?: Pro
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(result.error || "Save failed.");
-      if (action === "create") { router.push(`/admin/products/${result.id}`); router.refresh(); return; }
+      if (action === "create") {
+        const failures: string[] = [];
+        for (const [index, file] of staged.entries()) {
+          setMessage(`Uploading photo ${index + 1} of ${staged.length}…`);
+          try { await uploadProductPhoto(file, values.slug, values.name); }
+          catch (cause) { failures.push(cause instanceof Error ? cause.message : `Could not upload ${file.name}.`); }
+        }
+        if (failures.length) setError(failures.join(" "));
+        router.push(`/admin/products/${result.id}`); router.refresh(); return;
+      }
       setStatus(result.status);
       setMessage(action === "publish" ? "Published — the product page is now live." : action === "unpublish" ? "Unpublished — kept as a draft." : "Saved.");
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Save failed."); }
@@ -105,6 +116,9 @@ export function ProductForm({ product, galleryCount, coverUrl }: { product?: Pro
     <div className="admin-field-wide">
       <AiFill mode="product" imageUrl={coverUrl ?? null} name={values.name} description={values.summary} onFill={applyAi} />
     </div>
+    {product
+      ? <ProductPhotoUploader slug={product.slug} name={product.name} coverUrl={coverUrl} galleryCount={galleryCount ?? 0} />
+      : <ProductPhotoStager files={staged} onChange={setStaged} />}
     <label>Name<input value={values.name} onChange={(event) => setName(event.target.value)} maxLength={180} required /></label>
     <label>URL slug<small>/{values.slug || "your-product"}/ · {slugLocked ? "locked" : "auto-set from the name"}</small>
       <input value={values.slug} onChange={(event) => { setSlugLocked(true); set("slug", slugify(event.target.value)); }} maxLength={120} required /></label>

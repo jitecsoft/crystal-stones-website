@@ -174,8 +174,21 @@ body:has(.admin-workspace) .site-header, body:has(.admin-workspace) .site-footer
 .admin-wordmark { display: grid; gap: 2px; font-family: var(--serif); font-size: 19px; letter-spacing: .09em; }
 .admin-wordmark span { color: var(--muted); font: 700 8px/1.2 var(--sans); letter-spacing: .18em; }
 .admin-role { color: var(--muted); font-size: 10px; text-transform: capitalize; }
-.admin-nav { display: flex; min-height: 46px; align-items: center; border-bottom: 1px solid var(--line); background: #f8f7f2; padding-inline: var(--gutter); }
-.admin-nav a { border-bottom: 2px solid var(--stone); padding: 14px 4px 11px; font-size: 11px; }
+.admin-nav { display: flex; min-height: 54px; align-items: center; border-bottom: 1px solid var(--line); background: #f8f7f2; padding-inline: var(--gutter); gap: 26px; }
+.admin-nav a { border-bottom: 2px solid transparent; padding: 16px 10px 13px; font-size: 12.5px; letter-spacing: .02em; transition: color .2s var(--ease), border-color .2s var(--ease); }
+.admin-nav a:hover { color: #3d4038; }
+.admin-nav a[aria-current="page"] { border-color: var(--stone); font-weight: 700; }
+.admin-upload { display: grid; gap: 10px; align-content: start; border: 1px dashed var(--line-strong); background: #faf9f4; padding: 16px 18px; }
+.admin-upload strong { font-size: 12.5px; }
+.admin-upload small { color: var(--muted); font-size: 10.5px; }
+.admin-upload input[type="file"] { font-size: 11px; }
+.admin-upload__list { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.admin-upload__list li { display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--line); padding-bottom: 6px; font-size: 11px; }
+.admin-upload__list button { border: 0; background: none; color: #8a3d2c; cursor: pointer; font-size: 13px; padding: 0 6px; }
+.admin-upload__preview { display: flex; align-items: center; gap: 12px; font-size: 11px; color: var(--muted); }
+.admin-upload__preview img { border: 1px solid var(--line); }
+.admin-upload__busy { color: var(--muted); font-size: 11px; }
+.admin-upload__problem { color: #8a3d2c; font-size: 11px; }
 .admin-main { width: min(100% - 2 * var(--gutter), 1260px); margin: 0 auto; padding-block: 52px 100px; }
 .admin-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; margin-bottom: 32px; }
 .admin-heading > div > p:last-child, .admin-section-heading p { max-width: 650px; margin: 0; color: var(--muted); font-size: 12px; }
