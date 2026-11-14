@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getMediaMember } from "@/lib/media/auth";
 import { validateMediaUpload } from "@/lib/media/domain";
-import { createResponsiveWebpVariants } from "@/lib/media/image-processing";
+import { createResponsiveWebpVariants, refineStoneImage } from "@/lib/media/image-processing";
 import { isValidMediaAssociation } from "@/lib/media/catalogue";
 
 export const runtime = "nodejs";
@@ -59,8 +59,20 @@ export async function POST(request: NextRequest) {
   const { error: originalError } = await supabase.storage.from("crystal-stones-private").upload(originalPath, buffer, { contentType: file.type, upsert: false });
   if (originalError) return fail(`Could not store the private original: ${originalError.message}`);
 
+  // Product photos get the stone-focused treatment: AI locates the slab, the
+  // image is cropped to it (stands, clamps and background excluded), then the
+  // responsive variants are generated from the refined master. The untouched
+  // original is always kept in storage.
+  let workBuffer: Buffer = buffer;
+  let processingNote = "";
+  if (contentType === "product" && entitySlug) {
+    const refined = await refineStoneImage(buffer);
+    workBuffer = refined.data;
+    processingNote = refined.note;
+  }
+
   try {
-    const generated = await Promise.all((await createResponsiveWebpVariants(buffer)).map(async ({ variant, data, width, height, size }) => {
+    const generated = await Promise.all((await createResponsiveWebpVariants(workBuffer)).map(async ({ variant, data, width, height, size }) => {
       const path = `${member.userId}/${id}/${variant}.webp`;
       const { error } = await supabase.storage.from("crystal-stones-private").upload(path, data, { contentType: "image/webp", upsert: false });
       if (error) throw new Error(`Could not store ${variant} image: ${error.message}`);
@@ -77,5 +89,5 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     return fail(error instanceof Error ? error.message : "Image processing failed.");
   }
-  return NextResponse.json({ ok: true, id, status: "review_needed" }, { status: 201 });
+  return NextResponse.json({ ok: true, id, status: "review_needed", note: processingNote }, { status: 201 });
 }

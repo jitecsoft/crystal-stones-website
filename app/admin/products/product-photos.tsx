@@ -17,8 +17,9 @@ function validate(file: File) {
   return null;
 }
 
-/** Uploads one file into the media library and attaches it to the product. */
-export async function uploadProductPhoto(file: File, slug: string, title: string) {
+/** Uploads one file into the media library and attaches it to the product.
+ *  Resolves with the processing note (e.g. "cropped to the stone"). */
+export async function uploadProductPhoto(file: File, slug: string, title: string): Promise<string> {
   const problem = validate(file);
   if (problem) throw new Error(problem);
   const data = new FormData();
@@ -29,6 +30,7 @@ export async function uploadProductPhoto(file: File, slug: string, title: string
   const response = await fetch("/api/admin/media/upload", { method: "POST", body: data });
   const result = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(result.error || `Could not upload ${file.name}.`);
+  return typeof result.note === "string" ? result.note : "";
 }
 
 /** New-product page: holds chosen files and attaches them right after the product is created. */
@@ -74,6 +76,7 @@ export function ProductPhotoUploader({ slug, name, coverUrl, galleryCount }: { s
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState("");
   const [error, setError] = useState("");
+  const [done, setDone] = useState("");
 
   async function handleFiles(event: ChangeEvent<HTMLInputElement>) {
     const selected = Array.from(event.target.files ?? []);
@@ -81,15 +84,18 @@ export function ProductPhotoUploader({ slug, name, coverUrl, galleryCount }: { s
     if (!selected.length) return;
     const problems = selected.map(validate).filter(Boolean) as string[];
     if (problems.length) { setError(problems.join(" ")); return; }
-    setBusy(true); setError("");
+    setBusy(true); setError(""); setDone("");
     const failures: string[] = [];
+    const notes: string[] = [];
     for (const [index, file] of selected.entries()) {
-      setProgress(`Uploading ${index + 1} of ${selected.length}…`);
-      try { await uploadProductPhoto(file, slug, name); }
+      setProgress(selected.length > 1 ? `Uploading ${index + 1} of ${selected.length}…` : "Uploading — the stone area is detected and the image is cropped and enhanced…");
+      try { notes.push(await uploadProductPhoto(file, slug, name)); }
       catch (cause) { failures.push(cause instanceof Error ? cause.message : `Could not upload ${file.name}.`); }
     }
     setBusy(false); setProgress("");
     if (failures.length) setError(failures.join(" "));
+    const uniqueNotes = [...new Set(notes.filter(Boolean))];
+    if (uniqueNotes.length) setDone(uniqueNotes.join(" · "));
     router.refresh();
   }
 
@@ -108,6 +114,7 @@ export function ProductPhotoUploader({ slug, name, coverUrl, galleryCount }: { s
       {!coverUrl && <span>{galleryCount} photo{galleryCount === 1 ? "" : "s"} attached</span>}
       <input ref={inputRef} type="file" multiple accept={ACCEPT.join(",")} onChange={handleFiles} disabled={busy} />
       {busy && <span className="admin-upload__busy">{progress}</span>}
+      {done && <span className="admin-upload__busy">{done}</span>}
       {error && <span className="admin-upload__problem" role="alert">{error}</span>}
     </div>
   );

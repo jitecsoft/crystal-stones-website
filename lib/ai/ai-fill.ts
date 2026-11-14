@@ -323,6 +323,74 @@ export function sanitizeFields(raw: Record<string, unknown>): AiFields {
   return fields;
 }
 
+export type StoneRegion = { box: [number, number, number, number] } | { found: false };
+
+/**
+ * Vision helper: locate the main stone slab in a photograph and return its
+ * bounding box (normalised 0-1000, y-first) so the upload pipeline can crop
+ * stands, clamps and background out of product photos. Returns null when the
+ * assistant is not configured or cannot answer; the caller then falls back
+ * to local heuristics.
+ */
+export async function detectStoneRegion(imageDataUrl: string): Promise<StoneRegion | null> {
+  if (!aiConfigured()) return null;
+  const system = "You are a photo editor for a natural-stone catalogue. You reply with strict JSON only — no commentary.";
+  const user = [
+    "Locate the main stone slab or stone surface in this photograph (natural stone slab, tile sample or sintered-stone surface).",
+    'Return JSON: {"found":true,"box_2d":[ymin,xmin,ymax,xmax]} using coordinates normalised to 0-1000, y before x.',
+    "The box must tightly frame the stone and exclude stands, clamps, hands, tables, walls, floors and other props.",
+    "If several pieces are visible, box the single most prominent one.",
+    'If there is no clearly visible stone slab, or it covers under roughly 15% of the photo, return {"found":false,"box_2d":null}.'
+  ].join(" ");
+  const content = [
+    { type: "text", text: user },
+    { type: "image_url", image_url: { url: imageDataUrl } }
+  ];
+  const send = (payload: Record<string, unknown>) => fetch(`${aiBaseUrl()}/chat/completions`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.AI_API_KEY}` },
+    body: JSON.stringify(payload),
+    signal: AbortSignal.timeout(30000)
+  });
+  const attempts: Record<string, unknown>[] = [
+    { response_format: { type: "json_object" } },
+    {}
+  ];
+  for (const model of aiModelCandidates()) {
+    for (const attempt of attempts) {
+      try {
+        const response = await send({
+          model,
+          temperature: 0.1,
+          messages: [
+            { role: "system", content: system },
+            { role: "user", content: content as unknown as string }
+          ],
+          ...attempt
+        });
+        if (!response.ok) break; // next candidate model
+        const data = await response.json();
+        const raw = data?.choices?.[0]?.message?.content;
+        const text = Array.isArray(raw)
+          ? raw.map((part: { text?: string }) => part?.text ?? "").join("")
+          : typeof raw === "string" ? raw : "";
+        if (!text.trim()) continue;
+        const parsed = extractJson(text);
+        if (parsed.found === false) return { found: false };
+        const box = parsed.box_2d;
+        if (Array.isArray(box) && box.length === 4 && box.every((value) => typeof value === "number" && value >= -5 && value <= 1005)) {
+          const [ymin, xmin, ymax, xmax] = box as number[];
+          if (ymax > ymin + 20 && xmax > xmin + 20) return { box: [ymin, xmin, ymax, xmax] };
+        }
+        return null;
+      } catch {
+        continue;
+      }
+    }
+  }
+  return null;
+}
+
 export async function aiFill(input: {
   imageDataUrl?: string | null;
   name?: string;
