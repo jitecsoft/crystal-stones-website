@@ -4,6 +4,9 @@
  * the named product/lot. This data file is the supported product-entry workflow.
  */
 
+import { applicationImageForProduct } from "./products/db";
+import type { ProductCategorySlug } from "./products/categories";
+
 export type MarbleOrigin = "Italy" | "Turkey" | "Spain" | "Greece" | "Portugal";
 export type MarbleOriginSlug = "italy" | "turkey" | "spain" | "greece" | "portugal" | "other";
 export type StoneFamily = "marble" | "limestone" | "travertine" | "onyx" | "quartzite" | "granite" | "other";
@@ -201,40 +204,32 @@ export function getMarbleVariety(slug: string) {
 }
 
 /**
- * Family-level illustrative interiors for variety pages. None of these show the
- * actual named variety — captions on the page state this explicitly.
+ * Variety pages use the same colour-aware matcher as product pages, so each
+ * named variety's illustrative interior follows its own name, colours and
+ * applications — a gold variety lands in a warm interior, a red one in a
+ * terracotta space, a grey one in a muted kitchen — instead of every marble
+ * sharing one white feature-wall image. None of these show the actual named
+ * variety; captions on the page state this explicitly.
  */
-const applicationImagesByFamily: Record<StoneFamily, { src: string; alt: string }> = {
-  marble: {
-    src: "/images/catalogue/imported-marble/marble-feature-hero.webp",
-    alt: "Illustrative interior with a bookmatched marble feature wall and stone counter",
-  },
-  limestone: {
-    src: "/images/home-hero.webp",
-    alt: "Illustrative warm beige interior with stone feature wall and island counter",
-  },
-  travertine: {
-    src: "/images/home-hero.webp",
-    alt: "Illustrative warm beige interior with stone feature wall and island counter",
-  },
-  onyx: {
-    src: "/images/catalogue/materials/pexels-porcelain-application.webp",
-    alt: "Illustrative bathroom interior with stone-clad walls and vanity",
-  },
-  quartzite: {
-    src: "/images/home-hero.webp",
-    alt: "Illustrative interior with a stone-topped island counter",
-  },
-  granite: {
-    src: "/images/neolith-interior.webp",
-    alt: "Illustrative kitchen interior with a grey stone island and worktops",
-  },
-  other: {
-    src: "/images/catalogue/imported-marble/marble-feature-hero.webp",
-    alt: "Illustrative interior with a natural-stone feature wall",
-  },
+const familyCategorySlugs: Record<StoneFamily, ProductCategorySlug> = {
+  marble: "marble",
+  limestone: "travertine-limestone",
+  travertine: "travertine-limestone",
+  onyx: "onyx",
+  quartzite: "quartzite",
+  granite: "granite",
+  other: "marble",
 };
 
 export function varietyApplicationImage(item: ImportedMarbleVariety) {
-  return applicationImagesByFamily[item.stoneFamily] ?? applicationImagesByFamily.other;
+  return applicationImageForProduct({
+    // Trade aliases often carry the colour cue the primary name lacks
+    // ("Portovenere black" for Portoro), so they join the name.
+    name: [item.name, ...item.aliases].join(" "),
+    category: familyCategorySlugs[item.stoneFamily],
+    subfamily: "",
+    colours: item.colours,
+    patterns: item.patterns,
+    applications: item.applications,
+  });
 }

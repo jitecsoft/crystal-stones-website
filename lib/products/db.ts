@@ -119,6 +119,11 @@ export function applicationImageForProduct(product: Pick<CatalogueProduct, "name
     return product.category === "sandstone" ? applicationInteriorPool.sandstoneLandscape : applicationInteriorPool.facadeCladding;
   }
   const wantsBathroom = /bathroom|vanity|wet area|shower/.test(haystack);
+  if (/emperador|marr[óo]n/.test(haystack)) {
+    // Emperador trade names are brown marbles even when the other word is
+    // "dark" or "light", so they are checked before the generic dark rule.
+    return applicationInteriorPool.brownMarbleBathroom;
+  }
   if (/black|dark|charcoal|noir|graphite|nero/.test(haystack)) {
     return applicationInteriorPool.mutedKitchen;
   }
@@ -128,10 +133,10 @@ export function applicationImageForProduct(product: Pick<CatalogueProduct, "name
   if (/blue|azzurro|celeste/.test(haystack)) {
     return applicationInteriorPool.blueKitchen;
   }
-  if (/amber|honey|miele|backlit/.test(haystack)) {
+  if (/amber|honey|miele|backlit|giallo|yellow/.test(haystack)) {
     return applicationInteriorPool.backlitBar;
   }
-  if (/red|pink|rose|rosa|bordeaux|terracotta/.test(haystack)) {
+  if (/red|pink|rose|rosa|bordeaux|terracotta|viola|rosso|rojo/.test(haystack)) {
     return applicationInteriorPool.terracottaLiving;
   }
   if (/white|bianco|bright|light/.test(haystack)) {
