@@ -71,8 +71,8 @@ export const materials: Material[] = [
     summary: "A dramatic stone direction for feature surfaces; confirm technical suitability for the intended use.",
     image: "/images/catalogue/materials/pexels-quartzite.webp",
     applicationImage: {
-      src: "/images/home-hero.webp",
-      alt: "Illustrative interior with a stone-topped island counter"
+      src: "/images/catalogue/interiors/interior-blue-kitchen.webp",
+      alt: "Illustrative kitchen with dramatic stone worktops and a marble backsplash"
     },
     illustrative: true
   },
@@ -101,8 +101,8 @@ export const materials: Material[] = [
     summary: "A translucent, patterned onyx direction for expressive feature surfaces. Backlighting, slab condition and reinforcement need project-specific review.",
     image: "/images/catalogue/natural-stone-families/onyx-amber.webp",
     applicationImage: {
-      src: "/images/catalogue/materials/pexels-porcelain-application.webp",
-      alt: "Illustrative bathroom interior with stone-clad walls and vanity"
+      src: "/images/catalogue/interiors/interior-backlit-bar.webp",
+      alt: "Illustrative bar counter with a backlit onyx and marble feature wall"
     },
     illustrative: true
   },

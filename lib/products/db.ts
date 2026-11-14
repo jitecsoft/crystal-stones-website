@@ -39,8 +39,8 @@ export type { ProductCategorySlug };
 export const categoryApplicationImages: Record<ProductCategorySlug, { src: string; alt: string }> = {
   marble: { src: "/images/catalogue/imported-marble/marble-feature-hero.webp", alt: "Illustrative interior with a bookmatched marble feature wall and stone counter" },
   granite: { src: "/images/neolith-interior.webp", alt: "Illustrative kitchen interior with a grey stone island and worktops" },
-  quartzite: { src: "/images/home-hero.webp", alt: "Illustrative interior with a stone-topped island counter" },
-  onyx: { src: "/images/catalogue/materials/pexels-porcelain-application.webp", alt: "Illustrative bathroom interior with stone-clad walls and vanity" },
+  quartzite: { src: "/images/catalogue/interiors/interior-blue-kitchen.webp", alt: "Illustrative kitchen with dramatic stone worktops and a marble backsplash" },
+  onyx: { src: "/images/catalogue/interiors/interior-backlit-bar.webp", alt: "Illustrative bar counter with a backlit onyx feature wall" },
   sandstone: { src: "/images/catalogue/natural-stone-families/sandstone-outdoor.webp", alt: "Illustrative sandstone in an exterior, landscape context" },
   "travertine-limestone": { src: "/images/home-hero.webp", alt: "Illustrative warm beige interior with stone feature wall and island counter" },
   porcelain: { src: "/images/neolith-interior.webp", alt: "Illustrative kitchen interior clad in large-format surface slabs" },
@@ -77,14 +77,37 @@ const applicationInteriorPool = {
   sandstoneLandscape: {
     src: "/images/catalogue/natural-stone-families/sandstone-outdoor.webp",
     alt: "Illustrative sandstone in an exterior, landscape context"
+  },
+  greenBathroom: {
+    src: "/images/catalogue/interiors/interior-green-bathroom.webp",
+    alt: "Illustrative bathroom with a green-tiled feature wall, grey marble cladding and a rough stone basin"
+  },
+  blueKitchen: {
+    src: "/images/catalogue/interiors/interior-blue-kitchen.webp",
+    alt: "Illustrative kitchen with blue cabinetry and a dramatic grey marble backsplash"
+  },
+  backlitBar: {
+    src: "/images/catalogue/interiors/interior-backlit-bar.webp",
+    alt: "Illustrative bar counter with a backlit onyx and marble feature wall"
+  },
+  brownMarbleBathroom: {
+    src: "/images/catalogue/interiors/interior-brown-marble-bathroom.webp",
+    alt: "Illustrative bathroom with a dark brown marble vanity and backlit detail"
+  },
+  terracottaLiving: {
+    src: "/images/catalogue/interiors/interior-terracotta-living.webp",
+    alt: "Illustrative rose-terracotta interior with warm plastered walls and a stone counter"
   }
 } as const;
 
 /**
  * Picks the "Applied in an interior" image for a product from its category,
- * colour-family sub-category, colours, patterns and applications — so a white
- * marble lands in a bright feature-wall interior, a grey or dark stone in a
- * muted kitchen, a beige or brown stone in a warm living space, and stones
+ * colour-family sub-category, colours, patterns and applications — so each
+ * colour family lands in a matching setting: white marble in a bright
+ * feature-wall interior, grey or dark stone in a muted kitchen, green and
+ * blue stones in green/blue interiors, amber onyx in a backlit bar, brown
+ * marble in a dark marble bathroom, red and pink stones in a warm
+ * terracotta space, beige stones in a warm living space, and stones
  * specified for exteriors in a facade context. Computed at render time, so
  * it applies to every published product without data changes.
  */
@@ -92,12 +115,24 @@ export function applicationImageForProduct(product: Pick<CatalogueProduct, "name
   const category = productCategory(product.category);
   const fallback = category ? categoryApplicationImages[category.slug] : null;
   const haystack = [product.name, product.subfamily, ...product.colours, ...product.patterns, ...product.applications].join(" ").toLowerCase();
-  if (/facade|exterior|outdoor|cladding/.test(haystack)) {
+  if (/facade|exterior|outdoor/.test(haystack)) {
     return product.category === "sandstone" ? applicationInteriorPool.sandstoneLandscape : applicationInteriorPool.facadeCladding;
   }
   const wantsBathroom = /bathroom|vanity|wet area|shower/.test(haystack);
   if (/black|dark|charcoal|noir|graphite|nero/.test(haystack)) {
     return applicationInteriorPool.mutedKitchen;
+  }
+  if (/green|verde|emerald|olive/.test(haystack)) {
+    return applicationInteriorPool.greenBathroom;
+  }
+  if (/blue|azzurro|celeste/.test(haystack)) {
+    return applicationInteriorPool.blueKitchen;
+  }
+  if (/amber|honey|miele|backlit/.test(haystack)) {
+    return applicationInteriorPool.backlitBar;
+  }
+  if (/red|pink|rose|rosa|bordeaux|terracotta/.test(haystack)) {
+    return applicationInteriorPool.terracottaLiving;
   }
   if (/white|bianco|bright|light/.test(haystack)) {
     return wantsBathroom ? applicationInteriorPool.marbleBathroom : applicationInteriorPool.whiteFeature;
@@ -105,7 +140,10 @@ export function applicationImageForProduct(product: Pick<CatalogueProduct, "name
   if (/grey|gray|silver|smoke/.test(haystack)) {
     return applicationInteriorPool.mutedKitchen;
   }
-  if (/beige|brown|gold|cream|amber|honey|ivory|taupe|sand|warm|rose|pink/.test(haystack)) {
+  if (/brown|marrone|chocolate|walnut|noce|bronze/.test(haystack)) {
+    return applicationInteriorPool.brownMarbleBathroom;
+  }
+  if (/beige|gold|cream|ivory|taupe|sand|warm/.test(haystack)) {
     return applicationInteriorPool.warmLiving;
   }
   return fallback ?? applicationInteriorPool.mutedKitchen;
