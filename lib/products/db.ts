@@ -49,8 +49,69 @@ export const categoryApplicationImages: Record<ProductCategorySlug, { src: strin
   ceramic: { src: "/images/catalogue/materials/pexels-porcelain-application.webp", alt: "Illustrative ceramic surface in a contemporary interior" }
 };
 
-/** Category → illustrative slab/texture used as the gallery fallback before photos are published. */
-export const categoryFallbackImages: Record<ProductCategorySlug, string> = {
+/** Colour- and application-aware interior pool for product detail pages.
+ *  Each entry matches a family of stones so a white marble and a black
+ *  granite are shown in different settings. All entries are honestly
+ *  labelled as illustrative on the page. */
+const applicationInteriorPool = {
+  whiteFeature: {
+    src: "/images/catalogue/imported-marble/marble-feature-hero.webp",
+    alt: "Illustrative interior with a white bookmatched marble feature wall and stone counter"
+  },
+  mutedKitchen: {
+    src: "/images/neolith-interior.webp",
+    alt: "Illustrative kitchen interior with muted grey stone worktops and a stone island"
+  },
+  warmLiving: {
+    src: "/images/home-hero.webp",
+    alt: "Illustrative living space with a warm beige marble island and feature wall"
+  },
+  marbleBathroom: {
+    src: "/images/catalogue/materials/pexels-porcelain-application.webp",
+    alt: "Illustrative bathroom interior clad in white marble with warm veining"
+  },
+  facadeCladding: {
+    src: "/images/uploads/neolith-facade-reference.webp",
+    alt: "Illustrative facade with grey architectural cladding panels"
+  },
+  sandstoneLandscape: {
+    src: "/images/catalogue/natural-stone-families/sandstone-outdoor.webp",
+    alt: "Illustrative sandstone in an exterior, landscape context"
+  }
+} as const;
+
+/**
+ * Picks the "Applied in an interior" image for a product from its category,
+ * colour-family sub-category, colours, patterns and applications — so a white
+ * marble lands in a bright feature-wall interior, a grey or dark stone in a
+ * muted kitchen, a beige or brown stone in a warm living space, and stones
+ * specified for exteriors in a facade context. Computed at render time, so
+ * it applies to every published product without data changes.
+ */
+export function applicationImageForProduct(product: Pick<CatalogueProduct, "name" | "category" | "subfamily" | "colours" | "patterns" | "applications">): { src: string; alt: string } {
+  const category = productCategory(product.category);
+  const fallback = category ? categoryApplicationImages[category.slug] : null;
+  const haystack = [product.name, product.subfamily, ...product.colours, ...product.patterns, ...product.applications].join(" ").toLowerCase();
+  if (/facade|exterior|outdoor|cladding/.test(haystack)) {
+    return product.category === "sandstone" ? applicationInteriorPool.sandstoneLandscape : applicationInteriorPool.facadeCladding;
+  }
+  const wantsBathroom = /bathroom|vanity|wet area|shower/.test(haystack);
+  if (/black|dark|charcoal|noir|graphite|nero/.test(haystack)) {
+    return applicationInteriorPool.mutedKitchen;
+  }
+  if (/white|bianco|bright|light/.test(haystack)) {
+    return wantsBathroom ? applicationInteriorPool.marbleBathroom : applicationInteriorPool.whiteFeature;
+  }
+  if (/grey|gray|silver|smoke/.test(haystack)) {
+    return applicationInteriorPool.mutedKitchen;
+  }
+  if (/beige|brown|gold|cream|amber|honey|ivory|taupe|sand|warm|rose|pink/.test(haystack)) {
+    return applicationInteriorPool.warmLiving;
+  }
+  return fallback ?? applicationInteriorPool.mutedKitchen;
+}
+
+/** Category → illustrative slab/texture used as the gallery fallback before photos are published. */export const categoryFallbackImages: Record<ProductCategorySlug, string> = {
   marble: "/images/catalogue/imported-marble/marble-family-collection.webp",
   granite: "/images/catalogue/natural-stone-families/granite-family-collection.webp",
   quartzite: "/images/catalogue/materials/pexels-quartzite.webp",

@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { PublishedMediaGallery } from "@/components/PublishedMediaGallery";
 import { materials } from "@/lib/materials";
 import {
-  categoryApplicationImages,
+  applicationImageForProduct,
   categoryFallbackImages,
   getPublishedProduct,
   getProductCoverUrl,
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 function ProductDetails({ product, cover }: { product: CatalogueProduct; cover: string }) {
   const category = productCategory(product.category);
   const categoryLabel = productCategoryLabel(product.category);
-  const applicationImage = category ? categoryApplicationImages[category.slug] : null;
+  const applicationImage = applicationImageForProduct(product);
   const origin = [product.origin_country, product.origin_region].filter(Boolean).join(" · ");
   const rows = [
     ["Category", categoryLabel],
