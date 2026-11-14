@@ -128,20 +128,6 @@ export default function FaqPage() {
           </div>
         </div>
       </section>
-
-      <section className="brand-next-steps">
-        <div className="section-shell brand-next-steps__inner">
-          <div>
-            <p className="eyebrow">The next step</p>
-            <h2>Turn the question into a usable brief.</h2>
-            <p>Share the application, approximate quantity, finish and location. The team will confirm the details that matter for your project.</p>
-          </div>
-          <div className="hero-actions">
-            <Link className="button button-light" href="/requirement-builder/">Open the requirement builder <span aria-hidden="true">↗</span></Link>
-            <Link className="home-text-link" href="/contact-us/">Contact the team</Link>
-          </div>
-        </div>
-      </section>
     </main>
   );
 }

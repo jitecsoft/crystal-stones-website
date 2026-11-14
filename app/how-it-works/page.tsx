@@ -124,20 +124,6 @@ export default function HowItWorksPage() {
           <p className="note">Crystal Stones is an online stone sourcing business. Material suitability, availability and delivery are confirmed for each project before purchase.</p>
         </div>
       </section>
-
-      <section className="brand-next-steps">
-        <div className="section-shell brand-next-steps__inner">
-          <div>
-            <p className="eyebrow">Start where you are</p>
-            <h2>A rough idea is enough to begin.</h2>
-            <p>Share the application, approximate area and the look you have in mind. The team will help with the next useful question.</p>
-          </div>
-          <div className="hero-actions">
-            <Link className="button button-light" href="/requirement-builder/">Build your requirement <span aria-hidden="true">↗</span></Link>
-            <Link className="home-text-link" href="/faq/">Read the FAQ</Link>
-          </div>
-        </div>
-      </section>
     </main>
   );
 }

@@ -85,9 +85,5 @@ export default async function MarblePage({ searchParams }: { searchParams: Promi
         <ImportedMarbleCatalogue key={filterKey} products={importedMarbleVarieties} initialFilters={initialFilters} />
       </div>
     </section>
-
-    <section className="marble-bottom-cta">
-      <div className="section-shell marble-bottom-cta__inner"><div><p className="eyebrow">Looking for a particular block?</p><h2>Build your marble shortlist with us.</h2><p>Share a reference, approximate quantity, location and preferred finish. Ask for current slab photographs or a selection appointment.</p></div><Link className="button button-dark" href="/requirement-builder/?material=Marble">Request price &amp; availability <span aria-hidden="true">↗</span></Link></div>
-    </section>
   </main>;
 }

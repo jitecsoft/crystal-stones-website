@@ -123,20 +123,6 @@ export default function ProjectsPage() {
           <p className="note">All imagery on this page is illustrative development material. Verified project references will be published with permission and accurate material details.</p>
         </div>
       </section>
-
-      <section className="projects-share">
-        <div className="section-shell projects-share__inner">
-          <div>
-            <p className="eyebrow">Have a project to discuss?</p>
-            <h2>Tell us what the space has to do.</h2>
-            <p>Share the application, approximate area, location and the material direction you are considering. The team will help with the next useful step — including an honest view of what needs to be verified.</p>
-          </div>
-          <div className="projects-share__actions">
-            <Link className="button button-light" href="/requirement-builder/">Open the requirement builder <span aria-hidden="true">↗</span></Link>
-            <Link className="home-text-link" href="/contact-us/">Contact Crystal Stones</Link>
-          </div>
-        </div>
-      </section>
     </main>
   );
 }

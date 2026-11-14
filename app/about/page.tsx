@@ -67,14 +67,5 @@ export default function AboutPage() {
         <div className="process-grid">{pillars.map((pillar) => <article key={pillar.number}><span className="process-grid__number">{pillar.number}</span><h3>{pillar.title}</h3><p>{pillar.copy}</p></article>)}</div>
       </div>
     </section>
-
-    <section className="home-builder-cta home-builder-cta--image">
-      <Image className="home-builder-cta__background" src="/images/neolith-interior.webp" alt="" fill sizes="100vw" />
-      <span className="home-builder-cta__overlay" aria-hidden="true" />
-      <div className="home-builder-cta__inner">
-        <div><p className="eyebrow">Start a conversation</p><h2>Bring the material into context.</h2><p>Share your application, approximate quantity, location and preferred finish. We will help route the next step.</p></div>
-        <div className="home-builder-cta__actions"><Link className="button button-light" href="/requirement-builder/">Open the requirement builder <span aria-hidden="true">↗</span></Link><Link className="home-text-link" href="/contact-us/">Contact Crystal Stones</Link></div>
-      </div>
-    </section>
   </main>;
 }

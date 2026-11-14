@@ -124,20 +124,6 @@ export async function FamilyLanding({ config }: { config: FamilyLandingConfig })
           </div>
         </div>
       </section>
-
-      <section className="family-cta">
-        <div className="section-shell family-cta__inner">
-          <div>
-            <p className="eyebrow">Bring it into the project</p>
-            <h2>Share the space, area and finish you have in mind.</h2>
-            <p>Origin, slab condition and current availability are confirmed for each requirement before a quotation is prepared.</p>
-          </div>
-          <div className="family-cta__actions">
-            <Link className="button button-light" href={config.quoteHref}>Open the requirement builder <span aria-hidden="true">↗</span></Link>
-            <Link className="home-text-link" href="/contact-us/">Contact Crystal Stones</Link>
-          </div>
-        </div>
-      </section>
     </main>
   );
 }
