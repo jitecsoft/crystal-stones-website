@@ -5,8 +5,6 @@ import { materials } from "@/lib/materials";
 import { importedMarbleVarieties } from "@/lib/imported-marble";
 import { architecturalBrands } from "@/lib/architectural-brands";
 import { categorySubfamilies, productCategories } from "@/lib/products/categories";
-import { AiFill } from "@/components/AiFill";
-import type { AiFields } from "@/lib/ai/ai-fill";
 
 export type EditableMediaAsset = {
   id: string;
@@ -24,6 +22,11 @@ export type EditableMediaAsset = {
 
 type Values = { title: string; altText: string; caption: string; description: string; seoTitle: string; seoDescription: string; attribution: string; usageRights: string; sourceUrl: string; association: string };
 
+/**
+ * Image-level metadata only. Product-level details (description, SEO copy)
+ * live on the product form, so the stored values are carried through the
+ * save request untouched rather than being edited in two places.
+ */
 export function MediaMetadataEditor({ asset, products = [], onSave }: { asset: EditableMediaAsset; products?: { slug: string; name: string }[]; onSave: (values: Values) => Promise<void> }) {
   const currentAssociation = asset.media_associations[0];
   const [values, setValues] = useState<Values>({
@@ -35,16 +38,6 @@ export function MediaMetadataEditor({ asset, products = [], onSave }: { asset: E
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const set = (key: keyof Values, value: string) => setValues((current) => ({ ...current, [key]: value }));
-  const applyAi = (fields: AiFields) => setValues((current) => ({
-    ...current,
-    title: fields.title ?? current.title,
-    altText: fields.alt_text ?? current.altText,
-    caption: fields.caption ?? current.caption,
-    description: fields.description ?? current.description,
-    seoTitle: fields.seo_title ?? current.seoTitle,
-    seoDescription: fields.seo_description ?? current.seoDescription,
-    association: fields.subfamily ? `subfamily:${fields.subfamily}` : fields.category ? `family:${fields.category}` : current.association
-  }));
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setBusy(true); setError("");
     try { await onSave(values); }
@@ -55,16 +48,10 @@ export function MediaMetadataEditor({ asset, products = [], onSave }: { asset: E
     <label>Image title<input value={values.title} onChange={(event) => set("title", event.target.value)} maxLength={180} /></label>
     <label>Alt text<input value={values.altText} onChange={(event) => set("altText", event.target.value)} maxLength={240} /></label>
     <label>Caption<input value={values.caption} onChange={(event) => set("caption", event.target.value)} maxLength={500} /></label>
-    <label>SEO title<input value={values.seoTitle} onChange={(event) => set("seoTitle", event.target.value)} maxLength={180} /></label>
-    <label className="admin-field-wide">Description<textarea value={values.description} onChange={(event) => set("description", event.target.value)} maxLength={3000} rows={3} /></label>
-    <label className="admin-field-wide">SEO description<textarea value={values.seoDescription} onChange={(event) => set("seoDescription", event.target.value)} maxLength={320} rows={2} /></label>
     <label>Attribution<input value={values.attribution} onChange={(event) => set("attribution", event.target.value)} maxLength={500} /></label>
     <label>Usage rights<input value={values.usageRights} onChange={(event) => set("usageRights", event.target.value)} maxLength={1000} /></label>
     <label className="admin-field-wide">Source URL<input type="url" value={values.sourceUrl} onChange={(event) => set("sourceUrl", event.target.value)} maxLength={1000} /></label>
     <label className="admin-field-wide">Catalogue association<select value={values.association} onChange={(event) => set("association", event.target.value)}><option value="">No catalogue association</option><optgroup label="Stone categories">{productCategories.map((item) => <option key={`family:${item.slug}`} value={`family:${item.slug}`}>{item.label} (category)</option>)}</optgroup><optgroup label="Colour families">{Object.values(categorySubfamilies).flat().map((item) => <option key={`subfamily:${item.slug}`} value={`subfamily:${item.slug}`}>{item.label}</option>)}</optgroup><optgroup label="Materials">{materials.map((item) => <option key={`material:${item.slug}`} value={`material:${item.slug}`}>{item.name}</option>)}</optgroup><optgroup label="Imported marble varieties">{importedMarbleVarieties.map((item) => <option key={`marble_variety:${item.slug}`} value={`marble_variety:${item.slug}`}>{item.name}</option>)}</optgroup><optgroup label="Architectural brands">{architecturalBrands.map((item) => <option key={`brand:${item.slug}`} value={`brand:${item.slug}`}>{item.name}</option>)}</optgroup>{products.length > 0 && <optgroup label="Products">{products.map((item) => <option key={`product:${item.slug}`} value={`product:${item.slug}`}>{item.name}</option>)}</optgroup>}</select></label>
-    <div className="admin-field-wide">
-      <AiFill mode="media" assetId={asset.id} name={values.title} description={values.description} onFill={applyAi} />
-    </div>
     {error && <p className="admin-error admin-field-wide" role="alert">{error}</p>}<div className="admin-edit-actions admin-field-wide"><button className="button button-outline" disabled={busy}>{busy ? "Saving…" : "Save corrections"}</button></div>
   </form></details>;
 }

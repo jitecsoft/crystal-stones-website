@@ -1,8 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { productCategories, slugify, subfamiliesForCategory } from "@/lib/products/db";
 import { AiFill } from "@/components/AiFill";
 import { ProductPhotoStager, ProductPhotoUploader, uploadProductPhoto } from "./product-photos";
@@ -140,7 +139,7 @@ export function ProductForm({ product, galleryCount, coverUrl }: { product?: Pro
 
     {editing && <div className="admin-field-wide admin-product-form__hint">
       <strong>Photos on this product page:</strong> {galleryCount ? `${galleryCount} published image${galleryCount === 1 ? "" : "s"}` : "none published yet"}.{" "}
-      Upload in the <Link href="/admin/library">Library</Link>, then edit that image and choose this product under “Catalogue association”.
+      Use the product photo upload box above — uploads are auto-published to this page.
     </div>}
 
     {error && <p className="admin-error admin-field-wide" role="alert">{error}</p>}

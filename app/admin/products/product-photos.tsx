@@ -17,8 +17,10 @@ function validate(file: File) {
   return null;
 }
 
-/** Uploads one file into the media library and attaches it to the product.
- *  Resolves with the processing note (e.g. "cropped to the stone"). */
+/** Uploads one file into the media library, attaches it to the product and
+ *  publishes it immediately, so the photo appears on the product page without
+ *  a trip to the Image Library. Resolves with the processing note
+ *  (e.g. "cropped to the stone"). */
 export async function uploadProductPhoto(file: File, slug: string, title: string): Promise<string> {
   const problem = validate(file);
   if (problem) throw new Error(problem);
@@ -30,6 +32,27 @@ export async function uploadProductPhoto(file: File, slug: string, title: string
   const response = await fetch("/api/admin/media/upload", { method: "POST", body: data });
   const result = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(result.error || `Could not upload ${file.name}.`);
+  const id: unknown = result.id;
+  if (typeof id === "string" && id) {
+    const publishResponse = await fetch(`/api/admin/media/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "approve" })
+    });
+    if (publishResponse.ok) {
+      const published = await fetch(`/api/admin/media/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "publish" })
+      });
+      if (!published.ok) {
+        const publishedResult = await published.json().catch(() => ({}));
+        throw new Error(`${file.name} uploaded but could not be published: ${publishedResult.error || "try again from the Image Library."}`);
+      }
+    }
+    // If the approve step failed the photo stays in review; the Image Library
+    // still shows it, so do not block the rest of the batch.
+  }
   return typeof result.note === "string" ? result.note : "";
 }
 
@@ -95,7 +118,7 @@ export function ProductPhotoUploader({ slug, name, coverUrl, galleryCount }: { s
     setBusy(false); setProgress("");
     if (failures.length) setError(failures.join(" "));
     const uniqueNotes = [...new Set(notes.filter(Boolean))];
-    if (uniqueNotes.length) setDone(uniqueNotes.join(" · "));
+    if (!failures.length) setDone(uniqueNotes.length ? `Published to the product page — ${uniqueNotes.join(" · ")}` : "Published to the product page.");
     router.refresh();
   }
 
@@ -103,7 +126,7 @@ export function ProductPhotoUploader({ slug, name, coverUrl, galleryCount }: { s
     <div className="admin-field-wide admin-upload">
       <div>
         <strong>Product photos</strong>
-        <small>Uploads go through the same processing as the library: three auto-sized WebP versions are generated and the image is attached to this product.</small>
+        <small>Uploads are auto-published: the stone area is detected, three WebP versions are generated and the image appears on this product straight away.</small>
       </div>
       {coverUrl && (
         <div className="admin-upload__preview">

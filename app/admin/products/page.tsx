@@ -15,7 +15,7 @@ export default async function AdminProductsPage() {
   const products: ProductRow[] = (rows ?? []).map((row) => ({ ...row, updated_at: String(row.updated_at) }));
   return <div className="admin-workspace">
     <header className="admin-topbar"><Link href="/admin" className="admin-wordmark">CRYSTAL STONES <span>PRODUCT CATALOGUE</span></Link><div><span className="admin-role">{role.replace("_", " ")}</span><SignOutButton /></div></header>
-    <nav className="admin-nav" aria-label="Media workspace"><Link href="/admin/library">Library</Link><Link aria-current="page" href="/admin/products">Products</Link></nav>
+    <nav className="admin-nav" aria-label="Media workspace"><Link href="/admin/library">Image Library</Link><Link aria-current="page" href="/admin/products">Products</Link></nav>
     <main className="admin-main">
       <div className="admin-heading"><div><p className="eyebrow">Content operations</p><h1>Products</h1><p>Create catalogue products under their stone category, add description, tags and SEO details, then publish them to the website.</p></div><Link className="button button-dark" href="/admin/products/new">New product</Link></div>
       {error && <p className="admin-error" role="alert">Could not load products: {error.message}</p>}
