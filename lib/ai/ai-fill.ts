@@ -1,4 +1,4 @@
-import { categorySubfamilies, productCategories } from "@/lib/products/categories";
+import { categorySubfamilies, productCategories } from "../products/categories";
 
 /**
  * Catalogue assistant for the admin team.

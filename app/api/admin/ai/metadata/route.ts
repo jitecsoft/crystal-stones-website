@@ -58,6 +58,10 @@ export async function POST(request: NextRequest) {
     }
   } else if (body.imageUrl && /^https?:\/\//i.test(body.imageUrl)) {
     imageDataUrl = await toDataUrl(body.imageUrl, "image/jpeg").catch(() => null);
+  } else if (body.imageUrl && /^data:image\/(jpeg|png|webp|avif);base64,/i.test(body.imageUrl)) {
+    // Base64 of a client-selected file that has not been uploaded yet (bulk
+    // upload batch fill). Capped so requests stay within model payload limits.
+    if (body.imageUrl.length <= 12_000_000) imageDataUrl = body.imageUrl;
   }
 
   const query = [name, hint].filter(Boolean).join(" ").trim();

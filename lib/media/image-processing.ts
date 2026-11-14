@@ -1,6 +1,6 @@
 import sharp from "sharp";
-import type { StoneRegion } from "@/lib/ai/ai-fill";
-import { aiConfigured, detectStoneRegion } from "@/lib/ai/ai-fill";
+import type { StoneRegion } from "../ai/ai-fill";
+import { aiConfigured, detectStoneRegion } from "../ai/ai-fill";
 
 const targets = [
   { variant: "thumbnail", width: 320, quality: 78 },

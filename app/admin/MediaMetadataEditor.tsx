@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { AiFill } from "@/components/AiFill";
+import type { AiFields } from "@/lib/ai/ai-fill";
 import { materials } from "@/lib/materials";
 import { importedMarbleVarieties } from "@/lib/imported-marble";
 import { architecturalBrands } from "@/lib/architectural-brands";
@@ -44,7 +46,21 @@ export function MediaMetadataEditor({ asset, products = [], onSave }: { asset: E
     catch (cause) { setError(cause instanceof Error ? cause.message : "Metadata could not be saved."); }
     finally { setBusy(false); }
   }
+  /** Image-level suggestions only: title, alt text, caption and the catalogue
+   *  association. Description and SEO copy stay on the product form. */
+  function applyAi(fields: AiFields) {
+    setValues((current) => {
+      const next = { ...current };
+      if (fields.title) next.title = fields.title;
+      if (fields.alt_text) next.altText = fields.alt_text;
+      if (fields.caption) next.caption = fields.caption;
+      if (fields.subfamily) next.association = `subfamily:${fields.subfamily}`;
+      else if (fields.category) next.association = `family:${fields.category}`;
+      return next;
+    });
+  }
   return <details className="admin-edit-details"><summary>Edit metadata &amp; association</summary><form className="admin-field-grid admin-edit-form" onSubmit={submit}>
+    <div className="admin-field-wide"><AiFill mode="media" assetId={asset.id} name={values.title} onFill={applyAi} /></div>
     <label>Image title<input value={values.title} onChange={(event) => set("title", event.target.value)} maxLength={180} /></label>
     <label>Alt text<input value={values.altText} onChange={(event) => set("altText", event.target.value)} maxLength={240} /></label>
     <label>Caption<input value={values.caption} onChange={(event) => set("caption", event.target.value)} maxLength={500} /></label>
