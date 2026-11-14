@@ -879,6 +879,7 @@ body.menu-open { overflow: hidden; }
   padding-right: 34px;
 }
 .field input:hover, .field select:hover, .field textarea:hover { border-color: var(--line-strong); }
+.field-hint { margin-top: -4px; color: var(--muted); font-size: 9.5px; line-height: 1.5; }
 .field input:focus, .field select:focus, .field textarea:focus {
   border-color: var(--clay);
   outline: 0;

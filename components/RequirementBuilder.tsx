@@ -7,6 +7,7 @@ import { colours, families } from "@/lib/materials";
 type FormState = {
   audience: string; material: string; stoneName: string; colour: string; application: string;
   area: string; unit: "sqft" | "sqm"; waste: number; supplyFormat: string; thickness: string;
+  resinTreatment: string; resinProcess: string;
   finish: string; sizePreset: string; customLength: string; customWidth: string; pieceQuantity: string;
   destination: string; timeline: string; name: string; company: string; phone: string; email: string;
   projectLocation: string; notes: string;
@@ -14,7 +15,8 @@ type FormState = {
 const initial: FormState = {
   audience: "Trade / commercial project", material: "Marble", stoneName: "", colour: "White",
   application: "Flooring", area: "", unit: "sqft", waste: 10, supplyFormat: "Cut-to-size",
-  thickness: "18 mm", finish: "Polished", sizePreset: "Custom / not sure", customLength: "", customWidth: "",
+  thickness: "18 mm", resinTreatment: "Not sure / advise me", resinProcess: "",
+  finish: "Polished", sizePreset: "Custom / not sure", customLength: "", customWidth: "",
   pieceQuantity: "", destination: "India", timeline: "Within 1–3 months", name: "", company: "",
   phone: "", email: "", projectLocation: "", notes: ""
 };
@@ -23,6 +25,14 @@ const stepLabels = ["Material", "Quantity & finish", "Project & contact"];
 const applications = ["Flooring", "Wall cladding / feature wall", "Kitchen countertop", "Bathroom / vanity", "Staircase", "Facade / exterior", "Furniture / bespoke work", "Multiple applications", "Other"];
 const finishes = ["Polished", "Honed / matte", "Leathered / textured", "Brushed / other", "Not decided"];
 const audiences = ["Trade / commercial project", "Home / renovation", "Stone dealer / bulk purchase"];
+const thicknessOptions = ["Not sure / advise me", "6 mm", "12 mm", "15 mm", "16 mm", "17 mm", "18 mm", "20 mm", "30 mm", "Other"];
+const resinTreatments = [
+  "Not sure / advise me",
+  "No resin treatment",
+  "Hand-applied resin (manual resin treatment)",
+  "Factory resin treatment (plant-applied)"
+];
+const resinProcesses = ["Surface resin coating", "Vacuum resin impregnation", "Resin with mesh reinforcement"];
 
 export function RequirementBuilder() {
   const [form, setForm] = useState<FormState>(initial);
@@ -67,7 +77,9 @@ export function RequirementBuilder() {
     ["Colour", form.colour], ["Application", form.application],
     ["Measured area", areaValid ? `${measuredArea.toLocaleString("en-IN")} ${form.unit}` : "Not entered"],
     ["Estimated order area", areaValid ? `${orderSqft.toLocaleString("en-IN", { maximumFractionDigits: 1 })} sq ft / ${orderSqm.toLocaleString("en-IN", { maximumFractionDigits: 1 })} m²` : "Not calculated"],
-    ["Supply format", form.supplyFormat], ["Thickness", form.thickness], ["Finish", form.finish],
+    ["Supply format", form.supplyFormat], ["Thickness", form.thickness], ["Resin treatment", form.resinTreatment],
+    ...(form.resinProcess ? [["Resin process", form.resinProcess]] : []),
+    ["Finish", form.finish],
     ["Dimensions", form.sizePreset === "Custom dimensions" ? `${form.customLength || "?"} × ${form.customWidth || "?"} mm` : form.sizePreset],
     ["Piece quantity", form.pieceQuantity || "Calculate / advise"], ["Destination", form.destination], ["Timeline", form.timeline]
   ], [form, areaValid, measuredArea, orderSqft, orderSqm]);
@@ -77,6 +89,8 @@ export function RequirementBuilder() {
     ["Application", form.application],
     ["Colour", form.colour],
     ["Area", areaValid ? `${measuredArea.toLocaleString("en-IN")} ${form.unit}` : form.pieceQuantity || "To be advised"],
+    ["Thickness", form.thickness],
+    ["Resin", form.resinTreatment.startsWith("Not sure") ? "To be advised" : form.resinTreatment.replace(" (manual resin treatment)", "").replace(" (plant-applied)", "")],
     ["Finish", form.finish],
     ["Timeline", form.timeline],
   ];
@@ -191,7 +205,9 @@ export function RequirementBuilder() {
             <div className="field full"><label htmlFor="waste">Cutting / wastage allowance: {form.waste}%</label><input id="waste" type="range" min="0" max="20" step="5" value={form.waste} onChange={(e) => update("waste", Number(e.target.value))} /><div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "var(--muted)" }}><span>0%</span><span>10%</span><span>20%</span></div></div>
             <div className="field full"><div className="qty-result"><span>Estimated material area including allowance</span><strong>{areaValid ? `${orderSqft.toLocaleString("en-IN", { maximumFractionDigits: 1 })} sq ft` : "Enter area or quantity"}</strong>{areaValid && <span>≈ {orderSqm.toLocaleString("en-IN", { maximumFractionDigits: 1 })} m² · measured area: {measuredArea.toLocaleString("en-IN")} {form.unit}</span>}</div></div>
             <div className="field"><label htmlFor="format">Supply format</label><select id="format" value={form.supplyFormat} onChange={(e) => update("supplyFormat", e.target.value)}>{["Full slabs", "Tiles", "Cut-to-size", "Not sure / advise me"].map((v) => <option key={v}>{v}</option>)}</select></div>
-            <div className="field"><label htmlFor="thickness">Thickness</label><select id="thickness" value={form.thickness} onChange={(e) => update("thickness", e.target.value)}>{["Not sure / advise me", "6 mm", "12 mm", "15 mm", "18 mm", "20 mm", "30 mm", "Other"].map((v) => <option key={v}>{v}</option>)}</select></div>
+            <div className="field"><label htmlFor="thickness">Thickness</label><select id="thickness" value={form.thickness} onChange={(e) => update("thickness", e.target.value)}>{thicknessOptions.map((v) => <option key={v}>{v}</option>)}</select><small className="field-hint">Slab thicknesses vary by stone and lot — 15–20 mm is typical for marble slabs.</small></div>
+            <div className="field"><label htmlFor="resin">Resin treatment</label><select id="resin" value={form.resinTreatment} onChange={(e) => update("resinTreatment", e.target.value)}>{resinTreatments.map((v) => <option key={v}>{v}</option>)}</select><small className="field-hint">Resin fills cracks, fissures and surface voids. Hand-applied resin is done manually on the slab; factory resin is applied in a processing plant.</small></div>
+            {form.resinTreatment.startsWith("Factory") && <div className="field"><label htmlFor="resin-process">Factory resin process (if known)</label><select id="resin-process" value={form.resinProcess} onChange={(e) => update("resinProcess", e.target.value)}><option value="">Not specified / confirm with the team</option>{resinProcesses.map((v) => <option key={v}>{v}</option>)}</select><small className="field-hint">Factory resin does not automatically mean vacuum treatment — the exact process is confirmed per lot.</small></div>}
             <div className="field"><label htmlFor="finish">Surface finish</label><select id="finish" value={form.finish} onChange={(e) => update("finish", e.target.value)}>{finishes.map((v) => <option key={v}>{v}</option>)}</select></div>
             <div className="field"><label htmlFor="size">Piece / slab dimensions</label><select id="size" value={form.sizePreset} onChange={(e) => update("sizePreset", e.target.value)}>{["Custom / not sure", "Large slabs", "600 × 600 mm tiles", "600 × 1200 mm tiles", "Custom dimensions"].map((v) => <option key={v}>{v}</option>)}</select></div>
             {form.sizePreset === "Custom dimensions" && <><div className="field"><label htmlFor="length">Length (mm)</label><input id="length" type="number" min="1" value={form.customLength} onChange={(e) => update("customLength", e.target.value)} /></div><div className="field"><label htmlFor="width">Width (mm)</label><input id="width" type="number" min="1" value={form.customWidth} onChange={(e) => update("customWidth", e.target.value)} /></div></>}
