@@ -24,8 +24,7 @@ const linkColumns = [
       { href: "/marble/origin/turkey/", label: "Turkish marble" },
       { href: "/marble/origin/spain/", label: "Spanish marble" },
       { href: "/marble/origin/greece/", label: "Greek marble" },
-      { href: "/marble/origin/portugal/", label: "Portuguese marble" },
-      { href: "/marble/origin/other/", label: "Other origins" }
+      { href: "/marble/origin/portugal/", label: "Portuguese marble" }
     ]
   },
   {
