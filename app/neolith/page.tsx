@@ -42,7 +42,6 @@ export default function NeolithPage() {
       </div>
     </section>
 
-    <section className="neolith-cta"><div className="section-shell neolith-cta__inner"><div><p className="eyebrow">Your Neolith enquiry</p><h2>Bring the surface into the conversation.</h2><p>Tell us about approximate quantity, location, finish preference and the project stage. Exact availability and specifications are confirmed before quotation.</p></div><Link className="button button-light" href={briefLink()}>Build your project brief <span aria-hidden="true">↗</span></Link></div></section>
     <p className="catalogue-disclosure neolith-disclosure">Neolith is the named brand direction supplied for this project. This page does not represent a complete brand catalogue or confirm any specific product, stock level or technical property.</p>
   </main>;
 }
