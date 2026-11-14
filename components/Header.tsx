@@ -161,8 +161,13 @@ export function Header() {
 
         <div className="header-actions">
           <a className="header-phone" href="tel:+917093111580">
-            <span className="header-phone__label">Talk to us</span>
-            <span>+91 70931 11580</span>
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" />
+            </svg>
+            <span className="header-phone__text">
+              <span className="header-phone__label">Talk to us</span>
+              <span className="header-phone__number">+91 70931 11580</span>
+            </span>
           </a>
           <Link className="button button-light header-cta" href="/requirement-builder/" aria-label="Plan a project">
             <span className="header-cta__full">Plan a project</span>
