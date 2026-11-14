@@ -401,30 +401,58 @@ body.menu-open { overflow: hidden; }
 .footer-social a:hover { border-color: var(--clay-bright); background: rgba(200, 141, 106, .14); color: var(--white); transform: translateY(-2px); }
 .footer-social a:hover svg { transform: scale(1.08); }
 /* Brand-coloured pills so Instagram and WhatsApp are instantly recognisable on the dark footer,
-   framed with a double outline: a gap in the footer colour, a solid brand ring, a second gap and a soft outer ring. */
+   styled like modern glossy social badges: a radial brand gradient lit from the top-left, a
+   specular sheen along the top edge, inner shading at the base for depth, a coloured drop glow
+   and a lit rim — all inside the same pill shape, framed with the double outline. */
 .footer-social a.footer-social__whatsapp {
   --social-ring: #25d366;
   --social-ring-soft: rgba(37, 211, 102, .45);
   --social-ring-strong: rgba(37, 211, 102, .8);
-  border-color: #25d366; background: #25d366; color: #fff;
-  box-shadow: 0 0 0 2px var(--forest-deep), 0 0 0 3.5px var(--social-ring), 0 0 0 5.5px var(--forest-deep), 0 0 0 7px var(--social-ring-soft);
-  transition: color .25s var(--ease), background-color .25s var(--ease), transform .25s var(--ease), box-shadow .25s var(--ease);
+  border-color: rgba(255, 255, 255, .30);
+  background: radial-gradient(120% 150% at 28% 15%, #6bf396 0%, #35e67a 40%, #25d366 62%, #149a45 100%);
+  color: #fff;
+  box-shadow:
+    0 0 0 2px var(--forest-deep), 0 0 0 3.5px var(--social-ring), 0 0 0 5.5px var(--forest-deep), 0 0 0 7px var(--social-ring-soft),
+    0 10px 22px -6px rgba(0, 0, 0, .55), 0 6px 18px -4px rgba(37, 211, 102, .45),
+    inset 0 1px 1px rgba(255, 255, 255, .55), inset 0 3px 6px rgba(255, 255, 255, .22), inset 0 -4px 7px rgba(10, 66, 30, .38);
+  transition: color .25s var(--ease), background .25s var(--ease), transform .25s var(--ease), box-shadow .25s var(--ease);
 }
 .footer-social a.footer-social__whatsapp:hover {
-  border-color: #1fbe5a; background: #1fbe5a; color: #fff; transform: translateY(-2px);
-  box-shadow: 0 0 0 2px var(--forest-deep), 0 0 0 3.5px var(--social-ring), 0 0 0 5.5px var(--forest-deep), 0 0 0 7px var(--social-ring-strong);
+  border-color: rgba(255, 255, 255, .45);
+  background: radial-gradient(120% 150% at 28% 15%, #83f7a7 0%, #45eb86 40%, #2edf70 62%, #17ad4d 100%);
+  color: #fff; transform: translateY(-2px);
+  box-shadow:
+    0 0 0 2px var(--forest-deep), 0 0 0 3.5px var(--social-ring), 0 0 0 5.5px var(--forest-deep), 0 0 0 7px var(--social-ring-strong),
+    0 14px 26px -6px rgba(0, 0, 0, .55), 0 8px 22px -4px rgba(37, 211, 102, .6),
+    inset 0 1px 1px rgba(255, 255, 255, .6), inset 0 3px 6px rgba(255, 255, 255, .26), inset 0 -4px 7px rgba(10, 66, 30, .34);
 }
 .footer-social a.footer-social__instagram {
   --social-ring: #e1306c;
   --social-ring-soft: rgba(225, 48, 108, .45);
   --social-ring-strong: rgba(225, 48, 108, .8);
-  border-color: transparent; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff;
-  box-shadow: 0 0 0 2px var(--forest-deep), 0 0 0 3.5px var(--social-ring), 0 0 0 5.5px var(--forest-deep), 0 0 0 7px var(--social-ring-soft);
-  transition: color .25s var(--ease), background-color .25s var(--ease), transform .25s var(--ease), box-shadow .25s var(--ease);
+  border-color: rgba(255, 255, 255, .30);
+  background:
+    radial-gradient(130% 150% at 30% 12%, rgba(255, 255, 255, .32), rgba(255, 255, 255, 0) 46%),
+    radial-gradient(140% 170% at 30% 105%, rgba(0, 0, 0, .30), rgba(0, 0, 0, 0) 58%),
+    linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  color: #fff;
+  box-shadow:
+    0 0 0 2px var(--forest-deep), 0 0 0 3.5px var(--social-ring), 0 0 0 5.5px var(--forest-deep), 0 0 0 7px var(--social-ring-soft),
+    0 10px 22px -6px rgba(0, 0, 0, .55), 0 6px 18px -4px rgba(225, 48, 108, .45),
+    inset 0 1px 1px rgba(255, 255, 255, .55), inset 0 3px 6px rgba(255, 255, 255, .22), inset 0 -4px 7px rgba(74, 10, 36, .38);
+  transition: color .25s var(--ease), background .25s var(--ease), transform .25s var(--ease), box-shadow .25s var(--ease);
 }
 .footer-social a.footer-social__instagram:hover {
-  border-color: transparent; background: linear-gradient(45deg, #f5a655, #ef7d55, #e43f5c, #d43479, #cb21a0); color: #fff; transform: translateY(-2px);
-  box-shadow: 0 0 0 2px var(--forest-deep), 0 0 0 3.5px var(--social-ring), 0 0 0 5.5px var(--forest-deep), 0 0 0 7px var(--social-ring-strong);
+  border-color: rgba(255, 255, 255, .45);
+  background:
+    radial-gradient(130% 150% at 30% 12%, rgba(255, 255, 255, .38), rgba(255, 255, 255, 0) 46%),
+    radial-gradient(140% 170% at 30% 105%, rgba(0, 0, 0, .26), rgba(0, 0, 0, 0) 58%),
+    linear-gradient(45deg, #f5a655, #ef7d55, #e43f5c, #d43479, #cb21a0);
+  color: #fff; transform: translateY(-2px);
+  box-shadow:
+    0 0 0 2px var(--forest-deep), 0 0 0 3.5px var(--social-ring), 0 0 0 5.5px var(--forest-deep), 0 0 0 7px var(--social-ring-strong),
+    0 14px 26px -6px rgba(0, 0, 0, .55), 0 8px 22px -4px rgba(225, 48, 108, .6),
+    inset 0 1px 1px rgba(255, 255, 255, .6), inset 0 3px 6px rgba(255, 255, 255, .26), inset 0 -4px 7px rgba(74, 10, 36, .34);
 }
 .application-showcase { border-top: 1px solid var(--line); padding-block: clamp(50px, 7vw, 84px); }
 .application-showcase .application-showcase__intro { margin-bottom: 26px; }
