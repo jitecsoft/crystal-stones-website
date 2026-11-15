@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd } from "@/components/JsonLd";
 import { architecturalBrands, brandCollectionSlug, getArchitecturalBrand, getBrandCollection, getBrandCollections, type ArchitecturalBrand } from "@/lib/architectural-brands";
+import { applicationImageForProduct } from "@/lib/products/db";
 import { siteUrl } from "@/lib/site";
 
 export const dynamicParams = true;
@@ -19,13 +20,21 @@ function collectionIntro(brand: ArchitecturalBrand, collectionName: string, colo
   return `${collectionName} is listed in the ${brand.name} catalogue (${brand.producer}) under ${brand.category.toLowerCase()}.${colourNote} The exact surface, current lot, finish, thickness and available formats are confirmed for your project on enquiry.`;
 }
 
-/** Interior image used to show how the surface family is used. Always labelled illustrative. */
-function interiorImage(brand: ArchitecturalBrand) {
-  const category = brand.category.toLowerCase();
-  if (category.includes("porcelain") || category.includes("ceramic")) {
-    return { src: "/images/catalogue/materials/pexels-porcelain-application.webp", alt: "Illustrative interior with large-format porcelain surfaces on walls and floors" };
-  }
-  return { src: "/images/neolith-interior.webp", alt: "Illustrative kitchen interior with a stone island and worktops" };
+/** Interior image used to show how the surface family is used. Always labelled illustrative.
+ *  Colour-aware per collection, so a dark collection sits in a muted kitchen and a
+ *  warm one in a terracotta space, matching the treatment used across the catalogue. */
+function interiorImage(brand: ArchitecturalBrand, collection?: { name: string; colours?: string[] }) {
+  return applicationImageForProduct({
+    name: [brand.name, collection?.name ?? ""].filter(Boolean).join(" "),
+    // All architectural-surface brands are porcelain-family products.
+    category: "porcelain",
+    subfamily: "",
+    colours: collection?.colours ?? [],
+    patterns: [],
+    // Brand applications are generic across every collection (all list facades),
+    // so they are left out — the colourway should lead the interior choice.
+    applications: []
+  });
 }
 
 function collectionEnquiry(brand: ArchitecturalBrand, collectionName: string, application?: string) {
@@ -59,7 +68,7 @@ export default async function BrandCollectionPage({ params }: { params: Promise<
   if (!collection) notFound();
 
   const hero = collection.image ?? brand.image.src;
-  const interior = interiorImage(brand);
+  const interior = interiorImage(brand, collection);
   const intro = collectionIntro(brand, collection.name, collection.colours);
   const specs: [string, string][] = [
     ["Brand", brand.name],

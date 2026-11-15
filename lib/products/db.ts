@@ -127,19 +127,19 @@ export function applicationImageForProduct(product: Pick<CatalogueProduct, "name
   if (/black|dark|charcoal|noir|graphite|nero/.test(haystack)) {
     return applicationInteriorPool.mutedKitchen;
   }
-  if (/green|verde|emerald|olive/.test(haystack)) {
+  if (/green|verde|emerald|olive|forest|amazonia/.test(haystack)) {
     return applicationInteriorPool.greenBathroom;
   }
-  if (/blue|azzurro|celeste/.test(haystack)) {
+  if (/blue|bleu|azzurro|celeste/.test(haystack)) {
     return applicationInteriorPool.blueKitchen;
   }
   if (/amber|honey|miele|backlit|giallo|yellow/.test(haystack)) {
     return applicationInteriorPool.backlitBar;
   }
-  if (/red|pink|rose|rosa|bordeaux|terracotta|viola|rosso|rojo/.test(haystack)) {
+  if (/red|pink|rose|rosa|bordeaux|terracotta|viola|rosso|rojo|corten|rust/.test(haystack)) {
     return applicationInteriorPool.terracottaLiving;
   }
-  if (/white|bianco|bright|light/.test(haystack)) {
+  if (/white|bianco|blanc|bright|light/.test(haystack)) {
     return wantsBathroom ? applicationInteriorPool.marbleBathroom : applicationInteriorPool.whiteFeature;
   }
   if (/grey|gray|silver|smoke/.test(haystack)) {

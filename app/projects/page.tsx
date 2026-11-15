@@ -25,8 +25,8 @@ const projects = [
     title: "Warm stone, wet-area discipline.",
     copy: "Travertine or marble surfaces detailed around vanities and shower walls, with slip resistance, sealing and maintenance planned from the start.",
     materials: ["Travertine", "Marble"],
-    image: "/images/home-hero.webp",
-    alt: "Illustrative warm-toned interior with a full-height stone wall",
+    image: "/images/catalogue/materials/pexels-porcelain-application.webp",
+    alt: "Illustrative bathroom interior with stone-clad walls and a stone vanity",
     application: "Bathroom / vanity",
   },
   {
