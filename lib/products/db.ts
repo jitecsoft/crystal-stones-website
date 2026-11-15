@@ -136,10 +136,10 @@ export function applicationImageForProduct(product: Pick<CatalogueProduct, "name
   if (/amber|honey|miele|backlit|giallo|yellow/.test(haystack)) {
     return applicationInteriorPool.backlitBar;
   }
-  if (/red|pink|rose|rosa|bordeaux|terracotta|viola|rosso|rojo|corten|rust/.test(haystack)) {
+  if (/\b(red|pink|rose|rosa|bordeaux|terracotta|viola|rosso|rojo|corten|rust)\b/.test(haystack)) {
     return applicationInteriorPool.terracottaLiving;
   }
-  if (/white|bianco|blanc|bright|light/.test(haystack)) {
+  if (/white|bianco|blanc|bright|light|pearl|perle/.test(haystack)) {
     return wantsBathroom ? applicationInteriorPool.marbleBathroom : applicationInteriorPool.whiteFeature;
   }
   if (/grey|gray|silver|smoke/.test(haystack)) {
