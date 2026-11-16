@@ -21,7 +21,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     <header className="admin-topbar"><Link href="/admin" className="admin-wordmark">CRYSTAL STONES <span>PRODUCT CATALOGUE</span></Link><div><span className="admin-role">{role.replace("_", " ")}</span><SignOutButton /></div></header>
     <nav className="admin-nav" aria-label="Media workspace"><Link href="/admin/library">Image Library</Link><Link aria-current="page" href="/admin/products">Products</Link></nav>
     <main className="admin-main">
-      <div className="admin-heading"><div><p className="eyebrow">{product.status === "published" ? `Published · /material/${product.slug}/` : "Draft"}</p><h1>{product.name}</h1><p>Editing a published product updates the live page immediately after you save.</p></div><Link className="text-link" href="/admin/products">← All products</Link></div>
+      <div className="admin-heading"><div><p className="eyebrow">{product.status === "published" ? `Published · /material/${product.slug}/` : "Draft"}</p><h1>{product.name}</h1><p>Editing a published product updates the live page immediately after you save.</p></div><div className="admin-heading__actions"><Link className="text-link" href="/admin/products">← All products</Link>{product.status === "published" && <Link className="button button-outline" href={`/material/${product.slug}/`} target="_blank" rel="noreferrer">View live page <span aria-hidden="true">↗</span></Link>}</div></div>
       <ProductForm product={product as ProductRecord} galleryCount={galleryCount ?? 0} coverUrl={await getProductCoverUrl(product.slug)} />
     </main>
   </div>;

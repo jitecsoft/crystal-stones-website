@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { productCategories, productCategoryLabel } from "@/lib/products/db";
+import { productCategories, productCategoryHref, productCategoryLabel } from "@/lib/products/db";
 
 export type ProductRow = {
   id: string;
@@ -76,6 +76,10 @@ export function ProductDashboard({ initial }: { initial: ProductRow[] }) {
                 {product.summary && <p className="admin-product__summary">{product.summary}</p>}
               </div>
               <div className="admin-product__actions">
+                {product.status === "published" && <>
+                  <Link className="button button-dark" href={`/material/${product.slug}/`} target="_blank" rel="noreferrer">View live <span aria-hidden="true">↗</span></Link>
+                  {productCategoryHref(product.category) && <Link className="text-link" href={productCategoryHref(product.category)!} target="_blank" rel="noreferrer">{productCategoryLabel(product.category)} section</Link>}
+                </>}
                 <Link className="button button-outline" href={`/admin/products/${product.id}`}>Edit</Link>
                 {product.status === "draft"
                   ? <button className="button button-dark" disabled={busyId === product.id} onClick={() => setStatus(product, "published")}>{busyId === product.id ? "Working…" : "Publish"}</button>

@@ -28,6 +28,11 @@ export function productCategory(slug: string) {
   return productCategories.find((category) => category.slug === slug);
 }
 
+/** Public listing page for a category (the "category section" for previews). */
+export function productCategoryHref(categorySlug: string) {
+  return productCategories.find((category) => category.slug === categorySlug)?.listingHref ?? null;
+}
+
 /** Family strings used by FamilyLanding configs → product category slugs. */
 const familyToCategory: Record<string, ProductCategorySlug> = {
   "Marble": "marble",
