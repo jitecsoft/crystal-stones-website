@@ -11,3 +11,5 @@ build
 .test-out/
 work/
 *.tsbuildinfo
+
+temp/
