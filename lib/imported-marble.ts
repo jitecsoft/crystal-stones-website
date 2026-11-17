@@ -97,6 +97,101 @@ const marbleImages: Record<"white" | "beige" | "grey" | "dark" | "pink" | "brown
   },
 };
 
+/**
+ * Per-variety reference imagery for the Italian catalogue. Each entry is a
+ * photograph of the named stone (Wikimedia Commons) or a closely
+ * colour/pattern-matched surface (Pexels); none of them are current lots, so
+ * every alt/usage string says so. Varieties without an entry fall back to the
+ * colour-matched illustrative images below (currently only Calacatta Viola,
+ * for which no honest variety photograph exists in free sources).
+ */
+const varietyImageOverrides: Record<string, MarbleImage> = {
+  statuario: {
+    src: "/images/catalogue/imported-marble/commons-statuario-marble.webp",
+    alt: "Reference photograph of a Statuario Venato slab from the Carrara district, white ground with bold grey veining; not a current lot",
+    attribution: "Wikimedia Commons · Lysippos · CC BY-SA 3.0",
+    usage: "Reference photograph of the named variety; confirm the specific lot before specification",
+    illustrative: true,
+  },
+  "calacatta-gold": {
+    src: "/images/catalogue/imported-marble/pexels-calacatta-gold-marble.webp",
+    alt: "Interior surface in warm gold-veined marble, shown as a character reference for Calacatta Gold; not a current lot",
+    attribution: "Pexels stock photography",
+    usage: "Reference imagery for veining character; not a photograph of a current slab",
+    illustrative: true,
+  },
+  carrara: {
+    src: "/images/catalogue/imported-marble/pexels-carrara-marble.webp",
+    alt: "Quarry face in the Carrara marble district, the source region of Carrara marble; not a slab or a current lot",
+    attribution: "Pexels stock photography",
+    usage: "Source-region quarry photograph; not a photograph of a supplied slab",
+    illustrative: true,
+  },
+  arabescato: {
+    src: "/images/catalogue/imported-marble/pexels-arabescato-marble.webp",
+    alt: "White marble surface with grey arabesque veining, shown as a character reference for Arabescato; not a current lot",
+    attribution: "Pexels stock photography",
+    usage: "Reference imagery for veining character; not a photograph of a current slab",
+    illustrative: true,
+  },
+  "lasa-white": {
+    src: "/images/catalogue/imported-marble/pexels-lasa-white-marble.webp",
+    alt: "Pale ivory-white stone surface with soft movement, shown as a character reference for Lasa White; not a current lot",
+    attribution: "Pexels stock photography",
+    usage: "Reference imagery for tone and character; not a photograph of a current slab",
+    illustrative: true,
+  },
+  botticino: {
+    src: "/images/catalogue/imported-marble/pexels-botticino-marble.webp",
+    alt: "Warm beige layered stone surface, shown as a character reference for Botticino; not a current lot",
+    attribution: "Pexels stock photography",
+    usage: "Reference imagery for tone and character; not a photograph of a current slab",
+    illustrative: true,
+  },
+  "perlato-sicilia": {
+    src: "/images/catalogue/imported-marble/pexels-perlato-sicilia-marble.webp",
+    alt: "Warm beige marble surface with fine veining, shown as a character reference for Perlato Sicilia; not a current lot",
+    attribution: "Pexels stock photography",
+    usage: "Reference imagery for tone and character; not a photograph of a current slab",
+    illustrative: true,
+  },
+  portoro: {
+    src: "/images/catalogue/imported-marble/commons-portoro-marble.webp",
+    alt: "Reference photograph of a Portoro marble slab, black ground with dramatic gold veining; not a current lot",
+    attribution: "Wikimedia Commons · Bodroza · CC BY-SA 4.0",
+    usage: "Reference photograph of the named variety; confirm the specific lot before specification",
+    illustrative: true,
+  },
+  "rosso-levanto": {
+    src: "/images/catalogue/imported-marble/commons-rosso-levanto-marble.webp",
+    alt: "Reference photograph of a Rosso Levanto marble slab, deep red ground with white branching veins; not a current lot",
+    attribution: "Wikimedia Commons · Graeme Bartlett · CC BY-SA 3.0",
+    usage: "Reference photograph of the named variety; confirm the specific lot before specification",
+    illustrative: true,
+  },
+  "giallo-siena": {
+    src: "/images/catalogue/imported-marble/commons-giallo-siena-marble.webp",
+    alt: "Reference photograph of a Giallo di Siena marble slab, golden-yellow ground with pale movement; not a current lot",
+    attribution: "Wikimedia Commons · Lysippos · CC BY-SA 2.0 DE",
+    usage: "Reference photograph of the named variety; confirm the specific lot before specification",
+    illustrative: true,
+  },
+  bardiglio: {
+    src: "/images/catalogue/imported-marble/commons-bardiglio-marble.webp",
+    alt: "Reference photograph of a Bardiglio marble slab, blue-grey ground with darker veining; not a current lot",
+    attribution: "Wikimedia Commons · Rolle-Stone · Public domain",
+    usage: "Reference photograph of the named variety; confirm the specific lot before specification",
+    illustrative: true,
+  },
+  "grigio-orobico": {
+    src: "/images/catalogue/imported-marble/pexels-grigio-orobico-marble.webp",
+    alt: "Polished grey marble slab with white and golden veining, shown as a character reference for Grigio Orobico; not a current lot",
+    attribution: "Pexels stock photography",
+    usage: "Reference imagery for veining character; not a photograph of a current slab",
+    illustrative: true,
+  },
+};
+
 function marbleImageFor(colours: string[], name: string): MarbleImage {
   const search = name.toLowerCase();
   if (/viola|lilac|rosa|pink/.test(search)) return marbleImages.pink;
@@ -136,7 +231,7 @@ const estremozSource = "https://iugs-geoheritage.org/geoheritage_stones/estremoz
 function variety(input: Omit<ImportedMarbleVariety, "image" | "technicalDocuments" | "availability" | "availabilityVerifiedAt" | "seoTitle" | "seoDescription">): ImportedMarbleVariety {
   return {
     ...input,
-    image: marbleImageFor(input.colours, input.name),
+    image: varietyImageOverrides[input.slug] ?? marbleImageFor(input.colours, input.name),
     technicalDocuments: [],
     availability: "enquiry-based",
     availabilityVerifiedAt: null,

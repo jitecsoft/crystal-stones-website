@@ -48,7 +48,7 @@ export default async function MarbleOriginPage({ params }: Props) {
       <Link className="button button-outline" href="/marble/">Browse all imported marble <span aria-hidden="true">↗</span></Link>
     </section>
     <section className="marble-results-section"><div className="section-shell">
-      <div className="section-intro"><div><p className="eyebrow">{products.length} starter entries</p><h2>Search this origin group.</h2></div><p>Variety-specific images and current slab information are not yet supplied; development imagery is clearly marked.</p></div>
+      <div className="section-intro"><div><p className="eyebrow">{products.length} starter entries</p><h2>Search this origin group.</h2></div><p>Most varieties are shown with a reference photograph of the named stone or a close character match; where none exists yet (currently Calacatta Viola), a clearly marked colour-matched illustration is used. None of the images show a current lot.</p></div>
       {products.length ? <ImportedMarbleCatalogue products={products} lockedOrigin={origin.name} /> : <div className="catalogue-empty"><p className="eyebrow">Origin collection in progress</p><h2>No varieties are published for this origin yet.</h2><p>We will add entries once the origin, stone family and commercial relevance are verified.</p><Link className="button button-dark" href="/requirement-builder/?material=Marble">Ask us to source a variety</Link></div>}
     </div></section>
   </main>;

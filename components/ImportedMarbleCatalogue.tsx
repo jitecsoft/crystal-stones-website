@@ -99,7 +99,7 @@ export function ImportedMarbleCatalogue({ products, lockedOrigin, initialFilters
         {filteredProducts.map((item) => <article className="marble-card" key={item.slug}>
           <Link href={`/marble/variety/${item.slug}/`} className="marble-card__media">
             <Image src={item.image.src} alt={item.image.alt} fill sizes="(max-width: 650px) 100vw, (max-width: 1000px) 50vw, 33vw" />
-            {item.image.illustrative && <span className="image-label">Illustrative</span>}
+            {item.image.attribution.startsWith("Wikimedia") ? <span className="image-label">Reference photo</span> : <span className="image-label">Illustrative</span>}
           </Link>
           <div className="marble-card__body">
             <div className="marble-card__meta"><span>{item.origin.country ?? "Origin to confirm"}</span><span>{familyLabel(item)}</span></div>
@@ -111,7 +111,7 @@ export function ImportedMarbleCatalogue({ products, lockedOrigin, initialFilters
           </div>
         </article>)}
       </div> : <div className="catalogue-empty"><p className="eyebrow">No exact matches</p><h2>Try another search or ask us to source a direction.</h2><p>Some trade names and attributes are still being verified. Share your preferred look and project brief for a current sourcing response.</p><div className="hero-actions"><button className="button button-dark" type="button" onClick={clearAll}>Clear filters</button><Link className="button button-outline" href="/requirement-builder/?material=Marble">Start a sourcing enquiry</Link></div></div>}
-      <p className="catalogue-disclosure">This starter catalogue is for discovery, not a stock list. Origin, stone family, finish, technical suitability and availability must be confirmed for each offered lot. Imagery is illustrative and not variety-specific.</p>
+      <p className="catalogue-disclosure">This starter catalogue is for discovery, not a stock list. Origin, stone family, finish, technical suitability and availability must be confirmed for each offered lot. Images are reference photographs of the named stone where credited, otherwise colour-matched illustrations; no image shows a current lot.</p>
 
       {selected.length > 0 && <div className="compare-dock" role="region" aria-label="Compare shortlist">
         <div><strong>{selected.length}</strong> {selected.length === 1 ? "variety" : "varieties"} shortlisted <span>{compared.map((item) => item.name).join(" · ")}</span></div>
